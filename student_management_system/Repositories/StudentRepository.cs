@@ -1,0 +1,78 @@
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+using StudentManagementSystem.Data;
+using StudentManagementSystem.Models;
+
+namespace StudentManagementSystem.Repositories
+{
+    public class StudentRepository : IStudentRepository
+    {
+
+        private readonly DapperContext _context;
+
+        public StudentRepository(DapperContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<Student>> GetAllAsync()
+        {
+            using var connection = _context.CreateConnection();
+
+            var students = await connection
+                .QueryAsync<Student>("SELECT * FROM Students");
+
+            return students.ToList();
+        }
+
+        public async Task<Student?> GetByIdAsync(int id)
+        {
+            using var connection = _context.CreateConnection();
+
+            var student = await connection
+                .QueryFirstOrDefaultAsync<Student>(
+                    "SELECT * FROM Students WHERE Id = @Id",
+                    new { Id = id });
+
+            return student;
+        }
+
+        public async Task<int> CreateAsync(Student student)
+        {
+            using var connection = _context.CreateConnection();
+
+            var query = @"INSERT INTO Students (Name, Email)
+                          VALUES (@Name, @Email);
+                          SELECT CAST(SCOPE_IDENTITY() as int);";
+
+            var id = await connection.ExecuteScalarAsync<int>(query, student);
+
+            return id;
+        }
+
+        public async Task<int> UpdateAsync(Student student)
+        {
+            using var connection = _context.CreateConnection();
+
+            var query = @"UPDATE Students
+                          SET Name = @Name,
+                              Email = @Email
+                          WHERE Id = @Id";
+
+            var rowsAffected = await connection.ExecuteAsync(query, student);
+
+            return rowsAffected;
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            using var connection = _context.CreateConnection();
+
+            var rowsAffected = await connection.ExecuteAsync(
+                "DELETE FROM Students WHERE Id = @Id",
+                new { Id = id });
+
+            return rowsAffected > 0;
+        }
+    }
+}
