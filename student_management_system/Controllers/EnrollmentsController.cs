@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentManagementSystem.DTOs;
-using StudentManagementSystem.Services;
+using StudentManagementSystem.Services.Abstractions;
 
 namespace StudentManagementSystem.Controllers
 {

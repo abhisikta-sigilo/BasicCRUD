@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using StudentManagementSystem.DTOs;
+﻿using StudentManagementSystem.DTOs;
 
-namespace StudentManagementSystem.Services
+namespace StudentManagementSystem.Services.Abstractions
 {
     public interface IEnrollmentService
     {

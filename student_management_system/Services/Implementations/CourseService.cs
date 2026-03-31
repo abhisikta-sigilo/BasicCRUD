@@ -1,8 +1,9 @@
 ﻿using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Models;
 using StudentManagementSystem.Repositories;
+using StudentManagementSystem.Services.Abstractions;
 
-namespace StudentManagementSystem.Services
+namespace StudentManagementSystem.Services.Implementations
 {
     // services call repositories to fetch/store entities/to database
     public class CourseService(ICourseRepository courseRepository) : ICourseService

@@ -1,8 +1,9 @@
 ﻿using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Models;
 using StudentManagementSystem.Repositories;
+using StudentManagementSystem.Services.Abstractions;
 
-namespace StudentManagementSystem.Services
+namespace StudentManagementSystem.Services.Implementations
 {
     public class EnrollmentService(IEnrollmentRepository enrollmentRepository) : IEnrollmentService
     {

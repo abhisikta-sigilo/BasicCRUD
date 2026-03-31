@@ -1,6 +1,6 @@
 ﻿using StudentManagementSystem.DTOs;
 
-namespace StudentManagementSystem.Services
+namespace StudentManagementSystem.Services.Abstractions
 {
     public interface ICourseService
     {
