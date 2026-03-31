@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StudentManagementSystem.DTOs;
-using StudentManagementSystem.Models;
 using StudentManagementSystem.Services;
 
 namespace StudentManagementSystem.Controllers
@@ -33,7 +30,6 @@ namespace StudentManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<GetCourseDto>> CreateCourse(CreateCourseDto createDto)
         {
-
             var courseDto = await courseService.CreateCourse(createDto);
 
             // return 201 created
