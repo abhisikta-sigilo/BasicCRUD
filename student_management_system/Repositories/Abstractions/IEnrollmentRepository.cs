@@ -1,10 +1,10 @@
 ﻿using StudentManagementSystem.Models;
 
-namespace StudentManagementSystem.Repositories
+namespace StudentManagementSystem.Repositories.Abstractions
 {
     public interface IEnrollmentRepository
     {
-        Task<List<Enrollment>> GetAllEnrollments();
+        Task<IEnumerable<Enrollment>> GetAllEnrollments();
         Task<Enrollment?> GetEnrollmentById(int id);
         Task<int> CreateEnrollment(Enrollment enrollment);
         Task<int> UpdateEnrollment(Enrollment enrollment);

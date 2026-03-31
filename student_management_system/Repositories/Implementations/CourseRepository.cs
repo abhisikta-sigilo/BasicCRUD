@@ -2,6 +2,7 @@
 using StudentManagementSystem.Data;
 using StudentManagementSystem.Models;
 using StudentManagementSystem.Repositories.Abstractions;
+using System.Data;
 
 namespace StudentManagementSystem.Repositories.Implementations
 {
@@ -9,29 +10,29 @@ namespace StudentManagementSystem.Repositories.Implementations
     {
         public async Task<IEnumerable<Course>> GetAllCourses()
         {
-            using var connection = context.CreateConnection();
+            using IDbConnection connection = context.CreateConnection();
 
-            var query = "SELECT * FROM Courses";
+            string query = "SELECT * FROM Courses";
 
-            var courses = await connection.QueryAsync<Course>(query);
+            IEnumerable<Course> courses = await connection.QueryAsync<Course>(query);
 
             return courses.ToList();
         }
 
         public async Task<Course?> GetCourseById(int id)
         {
-            using var connection = context.CreateConnection();
+            using IDbConnection connection = context.CreateConnection();
 
-            var query = "SELECT * FROM Courses WHERE Id = @Id";
+            string query = "SELECT * FROM Courses WHERE Id = @Id";
 
             return await connection.QueryFirstOrDefaultAsync<Course>(query, new { Id = id });
         }
 
         public async Task<int> CreateCourse(Course course)
         {
-            using var connection = context.CreateConnection();
+            using IDbConnection connection = context.CreateConnection();
 
-            var query = @"INSERT INTO Courses (CourseName)
+            string query = @"INSERT INTO Courses (CourseName)
                           VALUES (@CourseName);
                           SELECT CAST(SCOPE_IDENTITY() as int);";
 
@@ -40,24 +41,24 @@ namespace StudentManagementSystem.Repositories.Implementations
 
         public async Task<int> UpdateCourse(Course course)
         {
-            using var connection = context.CreateConnection();
+            using IDbConnection connection = context.CreateConnection();
 
-            var query = @"UPDATE Courses
+            string query = @"UPDATE Courses
                           SET CourseName = @CourseName
                           WHERE Id = @Id";
 
-            var rowsAffected = await connection.ExecuteAsync(query, course);
+            int rowsAffected = await connection.ExecuteAsync(query, course);
 
             return rowsAffected;
         }
 
         public async Task<bool> DeleteCourse(int id)
         {
-            using var connection = context.CreateConnection();
+            using IDbConnection connection = context.CreateConnection();
 
-            var query = "DELETE FROM Courses WHERE Id = @Id";
+            string query = "DELETE FROM Courses WHERE Id = @Id";
 
-            var rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
+            int rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
 
             return rowsAffected > 0;
         }
