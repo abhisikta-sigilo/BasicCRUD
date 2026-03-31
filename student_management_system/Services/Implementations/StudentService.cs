@@ -7,9 +7,9 @@ namespace StudentManagementSystem.Services.Implementations
 {
     public class StudentService(IStudentRepository studentRepository) : IStudentService
     {
-        public async Task<IEnumerable<GetStudentDto>> GetAllStudents()
+        public async Task<IEnumerable<GetStudentDto>> GetStudents()
         {
-            IEnumerable<Student> students = await studentRepository.GetAllStudents();
+            IEnumerable<Student> students = await studentRepository.GetStudents();
 
             IEnumerable<GetStudentDto> studentDtos = students.Select(s => new GetStudentDto
             {

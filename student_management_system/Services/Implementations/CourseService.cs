@@ -8,9 +8,9 @@ namespace StudentManagementSystem.Services.Implementations
     // services call repositories to fetch/store entities/to database
     public class CourseService(ICourseRepository courseRepository) : ICourseService
     {
-        public async Task<IEnumerable<GetCourseDto>> GetAllCourses()
+        public async Task<IEnumerable<GetCourseDto>> GetCourses()
         {
-            IEnumerable<Course> courses = await courseRepository.GetAllCourses();
+            IEnumerable<Course> courses = await courseRepository.GetCourses();
 
             // convert the entities into dtos
             IEnumerable<GetCourseDto> courseDtos = courses.Select(c => new GetCourseDto

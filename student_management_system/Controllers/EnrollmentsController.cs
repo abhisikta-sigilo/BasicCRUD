@@ -10,10 +10,10 @@ namespace StudentManagementSystem.Controllers
     {
         [HttpGet]
         // This endpoint returns a list of GetCourseDto objects
-        public async Task<ActionResult<IEnumerable<GetEnrollmentDto>>> GetAllEnrollments()
+        public async Task<ActionResult<IEnumerable<GetEnrollmentDto>>> GetEnrollments()
         {
             // get entities from database
-            IEnumerable<GetEnrollmentDto> enrollmentDtos = await enrollmentService.GetAllEnrollments();
+            IEnumerable<GetEnrollmentDto> enrollmentDtos = await enrollmentService.GetEnrollments();
 
             return Ok(enrollmentDtos);
         }

@@ -10,9 +10,9 @@ namespace StudentManagementSystem.Controllers
     {
         [HttpGet]
         // This endpoint returns a list of GetCourseDto objects
-        public async Task<ActionResult<IEnumerable<GetCourseDto>>> GetAllCourses()
+        public async Task<ActionResult<IEnumerable<GetCourseDto>>> GetCourses()
         {
-            IEnumerable<GetCourseDto> courses = await courseService.GetAllCourses();
+            IEnumerable<GetCourseDto> courses = await courseService.GetCourses();
 
             return Ok(courses);
         }

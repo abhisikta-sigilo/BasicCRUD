@@ -9,9 +9,9 @@ namespace StudentManagementSystem.Controllers
     public class StudentsController(IStudentService studentService) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetStudentDto>>> GetAllStudents()
+        public async Task<ActionResult<IEnumerable<GetStudentDto>>> GetStudents()
         {
-            IEnumerable<GetStudentDto> studentsDtos = await studentService.GetAllStudents();
+            IEnumerable<GetStudentDto> studentsDtos = await studentService.GetStudents();
 
             return Ok(studentsDtos);
         }

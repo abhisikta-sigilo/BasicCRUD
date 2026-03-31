@@ -7,10 +7,10 @@ namespace StudentManagementSystem.Services.Implementations
 {
     public class EnrollmentService(IEnrollmentRepository enrollmentRepository) : IEnrollmentService
     {
-        public async Task<IEnumerable<GetEnrollmentDto>> GetAllEnrollments()
+        public async Task<IEnumerable<GetEnrollmentDto>> GetEnrollments()
         {
             // get entities from database
-            IEnumerable<Enrollment> enrollments = await enrollmentRepository.GetAllEnrollments();
+            IEnumerable<Enrollment> enrollments = await enrollmentRepository.GetEnrollments();
 
 
             // get entities from database

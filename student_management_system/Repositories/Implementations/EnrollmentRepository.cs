@@ -8,7 +8,7 @@ namespace StudentManagementSystem.Repositories.Implementations
 {
     public class EnrollmentRepository(DapperContext context) : IEnrollmentRepository
     {
-        public async Task<IEnumerable<Enrollment>> GetAllEnrollments()
+        public async Task<IEnumerable<Enrollment>> GetEnrollments()
         {
             using IDbConnection connection = context.CreateConnection();
 

@@ -4,7 +4,7 @@ namespace StudentManagementSystem.Services.Abstractions
 {
     public interface IStudentService
     {
-        Task<IEnumerable<GetStudentDto>> GetAllStudents();
+        Task<IEnumerable<GetStudentDto>> GetStudents();
         Task<GetStudentDto?> GetStudentById(int id);
         Task<GetStudentDto> CreateStudent(CreateStudentDto createDto);
         Task<bool> UpdateStudent(int id, UpdateStudentDto updateDto);
