@@ -12,7 +12,7 @@ namespace StudentManagementSystem.Controllers
         // This endpoint returns a list of GetCourseDto objects
         public async Task<ActionResult<IEnumerable<GetCourseDto>>> GetAllCourses()
         {
-            var courses = await courseService.GetAllCourses();
+            IEnumerable<GetCourseDto> courses = await courseService.GetAllCourses();
 
             return Ok(courses);
         }
@@ -21,7 +21,7 @@ namespace StudentManagementSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetCourseDto>> GetCourseById(int id)
         {
-            var course = await courseService.GetCourseById(id);
+            GetCourseDto course = await courseService.GetCourseById(id);
 
             return Ok(course);
         }
@@ -30,7 +30,7 @@ namespace StudentManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<GetCourseDto>> CreateCourse(CreateCourseDto createDto)
         {
-            var courseDto = await courseService.CreateCourse(createDto);
+            GetCourseDto courseDto = await courseService.CreateCourse(createDto);
 
             // return 201 created
             return CreatedAtAction(nameof(GetCourseById), new { id = courseDto.Id }, courseDto);
@@ -41,7 +41,7 @@ namespace StudentManagementSystem.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCourse(int id, UpdateCourseDto updateDto)
         {
-            var updated = await courseService.UpdateCourse(id, updateDto);
+            bool updated = await courseService.UpdateCourse(id, updateDto);
 
             if (!updated)
             {
@@ -55,7 +55,7 @@ namespace StudentManagementSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
-            var deleted = await courseService.DeleteCourse(id);
+            bool deleted = await courseService.DeleteCourse(id);
 
             if (!deleted)
             {

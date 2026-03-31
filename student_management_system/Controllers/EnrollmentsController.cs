@@ -13,7 +13,7 @@ namespace StudentManagementSystem.Controllers
         public async Task<ActionResult<IEnumerable<GetEnrollmentDto>>> GetAllEnrollments()
         {
             // get entities from database
-            var enrollmentDtos = await enrollmentService.GetAllEnrollments();
+            IEnumerable<GetEnrollmentDto> enrollmentDtos = await enrollmentService.GetAllEnrollments();
 
             return Ok(enrollmentDtos);
         }
@@ -22,7 +22,7 @@ namespace StudentManagementSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetEnrollmentDto>> GetEnrollmentById(int id)
         {
-            var enrollmentDto = await enrollmentService.GetEnrollmentById(id);
+            GetEnrollmentDto enrollmentDto = await enrollmentService.GetEnrollmentById(id);
 
             if (enrollmentDto == null)
                 return NotFound();
@@ -35,7 +35,7 @@ namespace StudentManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<GetEnrollmentDto>> CreateEnrollment(CreateEnrollmentDto createDto)
         {
-            var enrollmentDto = await enrollmentService.CreateEnrollment(createDto);
+            GetEnrollmentDto enrollmentDto = await enrollmentService.CreateEnrollment(createDto);
 
             return CreatedAtAction(
                 nameof(GetEnrollmentById),

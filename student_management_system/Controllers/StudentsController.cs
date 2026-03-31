@@ -11,7 +11,7 @@ namespace StudentManagementSystem.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetStudentDto>>> GetAllStudents()
         {
-            var studentsDtos = await studentService.GetAllStudents();
+            IEnumerable<GetStudentDto> studentsDtos = await studentService.GetAllStudents();
 
             return Ok(studentsDtos);
         }
@@ -20,7 +20,7 @@ namespace StudentManagementSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetStudentDto>> GetStudentById(int id)
         {
-            var student = await studentService.GetStudentById(id);
+            GetStudentDto student = await studentService.GetStudentById(id);
 
             if (student == null)
                 return NotFound();
@@ -32,7 +32,7 @@ namespace StudentManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<GetStudentDto>> CreateStudent(CreateStudentDto createDto)
         {
-            var studentDto = await studentService.CreateStudent(createDto);
+            GetStudentDto studentDto = await studentService.CreateStudent(createDto);
 
             return CreatedAtAction(
                 nameof(GetStudentById),
@@ -57,7 +57,7 @@ namespace StudentManagementSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(int id)
         {
-            var deleted = await studentService.DeleteStudent(id);
+            bool deleted = await studentService.DeleteStudent(id);
 
             if (!deleted)
                 return NotFound();
