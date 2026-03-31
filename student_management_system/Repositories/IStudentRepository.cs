@@ -4,10 +4,10 @@ namespace StudentManagementSystem.Repositories
 {
     public interface IStudentRepository
     {
-        Task<List<Student>> GetAllAsync();
-        Task<Student?> GetByIdAsync(int id);
-        Task<int> CreateAsync(Student student);
-        Task<int> UpdateAsync(Student student);
-        Task<bool> DeleteAsync(int id);
+        Task<List<Student>> GetAllStudents();
+        Task<Student?> GetStudentById(int id);
+        Task<int> CreateStudent(Student student);
+        Task<int> UpdateStudent(Student student);
+        Task<bool> DeleteStudent(int id);
     }
 }

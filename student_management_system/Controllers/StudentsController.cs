@@ -10,9 +10,9 @@ namespace StudentManagementSystem.Controllers
     public class StudentsController(IStudentRepository studentRepository) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetStudentDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<GetStudentDto>>> GetAllStudents()
         {
-            var students = await studentRepository.GetAllAsync();
+            var students = await studentRepository.GetAllStudents();
 
             var studentDtos = students.Select(s => new GetStudentDto
             {
@@ -25,9 +25,9 @@ namespace StudentManagementSystem.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetStudentDto>> GetById(int id)
+        public async Task<ActionResult<GetStudentDto>> GetStudentById(int id)
         {
-            var student = await studentRepository.GetByIdAsync(id);
+            var student = await studentRepository.GetStudentById(id);
 
             if (student == null)
                 return NotFound();
@@ -43,7 +43,7 @@ namespace StudentManagementSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetStudentDto>> Create(CreateStudentDto createDto)
+        public async Task<ActionResult<GetStudentDto>> CreateStudent(CreateStudentDto createDto)
         {
             var student = new Student
             {
@@ -51,7 +51,7 @@ namespace StudentManagementSystem.Controllers
                 Email = createDto.Email
             };
 
-            var id = await studentRepository.CreateAsync(student);
+            var id = await studentRepository.CreateStudent(student);
 
             var studentDto = new GetStudentDto
             {
@@ -61,14 +61,14 @@ namespace StudentManagementSystem.Controllers
             };
 
             return CreatedAtAction(
-                nameof(GetById),
+                nameof(GetStudentById),
                 new { id },
                 studentDto
             );
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateStudentDto updateDto)
+        public async Task<IActionResult> UpdateStudent(int id, UpdateStudentDto updateDto)
         {
             var student = new Student
             {
@@ -77,7 +77,7 @@ namespace StudentManagementSystem.Controllers
                 Email = updateDto.Email
             };
 
-            var rowsAffected = await studentRepository.UpdateAsync(student);
+            var rowsAffected = await studentRepository.UpdateStudent(student);
 
             if (rowsAffected == 0)
                 return NotFound();
@@ -86,9 +86,9 @@ namespace StudentManagementSystem.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteStudent(int id)
         {
-            var deleted = await studentRepository.DeleteAsync(id);
+            var deleted = await studentRepository.DeleteStudent(id);
 
             if (!deleted)
                 return NotFound();

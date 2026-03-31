@@ -15,7 +15,7 @@ namespace StudentManagementSystem.Repositories
             _context = context;
         }
 
-        public async Task<List<Student>> GetAllAsync()
+        public async Task<List<Student>> GetAllStudents()
         {
             using var connection = _context.CreateConnection();
 
@@ -25,7 +25,7 @@ namespace StudentManagementSystem.Repositories
             return students.ToList();
         }
 
-        public async Task<Student?> GetByIdAsync(int id)
+        public async Task<Student?> GetStudentById(int id)
         {
             using var connection = _context.CreateConnection();
 
@@ -37,7 +37,7 @@ namespace StudentManagementSystem.Repositories
             return student;
         }
 
-        public async Task<int> CreateAsync(Student student)
+        public async Task<int> CreateStudent(Student student)
         {
             using var connection = _context.CreateConnection();
 
@@ -50,7 +50,7 @@ namespace StudentManagementSystem.Repositories
             return id;
         }
 
-        public async Task<int> UpdateAsync(Student student)
+        public async Task<int> UpdateStudent(Student student)
         {
             using var connection = _context.CreateConnection();
 
@@ -64,7 +64,7 @@ namespace StudentManagementSystem.Repositories
             return rowsAffected;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteStudent(int id)
         {
             using var connection = _context.CreateConnection();
 
