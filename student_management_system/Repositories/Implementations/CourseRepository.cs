@@ -3,20 +3,13 @@ using StudentManagementSystem.Data;
 using StudentManagementSystem.Models;
 using StudentManagementSystem.Repositories.Abstractions;
 
-namespace StudentManagementSystem.Repositories
+namespace StudentManagementSystem.Repositories.Implementations
 {
-    public class CourseRepository : ICourseRepository
+    public class CourseRepository(DapperContext context) : ICourseRepository
     {
-        private readonly DapperContext _context;
-
-        public CourseRepository(DapperContext context)
+        public async Task<IEnumerable<Course>> GetAllCourses()
         {
-            _context = context;
-        }
-
-        public async Task<List<Course>> GetAllCourses()
-        {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var query = "SELECT * FROM Courses";
 
@@ -27,7 +20,7 @@ namespace StudentManagementSystem.Repositories
 
         public async Task<Course?> GetCourseById(int id)
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var query = "SELECT * FROM Courses WHERE Id = @Id";
 
@@ -36,7 +29,7 @@ namespace StudentManagementSystem.Repositories
 
         public async Task<int> CreateCourse(Course course)
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var query = @"INSERT INTO Courses (CourseName)
                           VALUES (@CourseName);
@@ -47,7 +40,7 @@ namespace StudentManagementSystem.Repositories
 
         public async Task<int> UpdateCourse(Course course)
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var query = @"UPDATE Courses
                           SET CourseName = @CourseName
@@ -60,7 +53,7 @@ namespace StudentManagementSystem.Repositories
 
         public async Task<bool> DeleteCourse(int id)
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var query = "DELETE FROM Courses WHERE Id = @Id";
 

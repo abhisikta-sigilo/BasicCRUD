@@ -5,19 +5,11 @@ using StudentManagementSystem.Repositories.Abstractions;
 
 namespace StudentManagementSystem.Repositories.Implementations
 {
-    public class StudentRepository : IStudentRepository
+    public class StudentRepository(DapperContext context) : IStudentRepository
     {
-
-        private readonly DapperContext _context;
-
-        public StudentRepository(DapperContext context)
-        {
-            _context = context;
-        }
-
         public async Task<List<Student>> GetAllStudents()
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var students = await connection
                 .QueryAsync<Student>("SELECT * FROM Students");
@@ -27,7 +19,7 @@ namespace StudentManagementSystem.Repositories.Implementations
 
         public async Task<Student?> GetStudentById(int id)
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var student = await connection
                 .QueryFirstOrDefaultAsync<Student>(
@@ -39,7 +31,7 @@ namespace StudentManagementSystem.Repositories.Implementations
 
         public async Task<int> CreateStudent(Student student)
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var query = @"INSERT INTO Students (Name, Email)
                           VALUES (@Name, @Email);
@@ -52,7 +44,7 @@ namespace StudentManagementSystem.Repositories.Implementations
 
         public async Task<int> UpdateStudent(Student student)
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var query = @"UPDATE Students
                           SET Name = @Name,
@@ -66,7 +58,7 @@ namespace StudentManagementSystem.Repositories.Implementations
 
         public async Task<bool> DeleteStudent(int id)
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var rowsAffected = await connection.ExecuteAsync(
                 "DELETE FROM Students WHERE Id = @Id",

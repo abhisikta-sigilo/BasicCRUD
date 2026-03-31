@@ -5,18 +5,11 @@ using StudentManagementSystem.Repositories.Abstractions;
 
 namespace StudentManagementSystem.Repositories.Implementations
 {
-    public class EnrollmentRepository : IEnrollmentRepository
+    public class EnrollmentRepository(DapperContext context) : IEnrollmentRepository
     {
-        private readonly DapperContext _context;
-
-        public EnrollmentRepository(DapperContext context)
-        {
-            _context = context;
-        }
-
         public async Task<List<Enrollment>> GetAllEnrollments()
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var query = "SELECT * FROM Enrollments";
 
@@ -27,7 +20,7 @@ namespace StudentManagementSystem.Repositories.Implementations
 
         public async Task<Enrollment?> GetEnrollmentById(int id)
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var query = "SELECT * FROM Enrollments WHERE Id = @Id";
 
@@ -36,7 +29,7 @@ namespace StudentManagementSystem.Repositories.Implementations
 
         public async Task<int> CreateEnrollment(Enrollment enrollment)
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var query = @"INSERT INTO Enrollments (StudentId, CourseId, Percentage)
                           VALUES (@StudentId, @CourseId, @Percentage);
@@ -47,7 +40,7 @@ namespace StudentManagementSystem.Repositories.Implementations
 
         public async Task<int> UpdateEnrollment(Enrollment enrollment)
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var query = @"UPDATE Enrollments
                           SET StudentId = @StudentId,
@@ -62,7 +55,7 @@ namespace StudentManagementSystem.Repositories.Implementations
 
         public async Task<bool> DeleteEnrollment(int id)
         {
-            using var connection = _context.CreateConnection();
+            using var connection = context.CreateConnection();
 
             var query = "DELETE FROM Enrollments WHERE Id = @Id";
 
