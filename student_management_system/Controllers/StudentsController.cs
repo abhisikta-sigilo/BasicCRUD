@@ -1,94 +1,63 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StudentManagementSystem.Models;
-using StudentManagementSystem.Repositories;
 using StudentManagementSystem.DTOs;
+using StudentManagementSystem.Services;
 
 namespace StudentManagementSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class StudentsController(IStudentRepository studentRepository) : ControllerBase
+    public class StudentsController(IStudentService studentService) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetStudentDto>>> GetAllStudents()
         {
-            var students = await studentRepository.GetAllStudents();
+            var studentsDtos = await studentService.GetAllStudents();
 
-            var studentDtos = students.Select(s => new GetStudentDto
-            {
-                Id = s.Id,
-                Name = s.Name,
-                Email = s.Email
-            });
-
-            return Ok(studentDtos);
+            return Ok(studentsDtos);
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<GetStudentDto>> GetStudentById(int id)
         {
-            var student = await studentRepository.GetStudentById(id);
+            var student = await studentService.GetStudentById(id);
 
             if (student == null)
                 return NotFound();
-
-            var studentDto = new GetStudentDto
-            {
-                Id = student.Id,
-                Name = student.Name,
-                Email = student.Email
-            };
-
-            return Ok(studentDto);
+            
+            return Ok(student);
         }
+
 
         [HttpPost]
         public async Task<ActionResult<GetStudentDto>> CreateStudent(CreateStudentDto createDto)
         {
-            var student = new Student
-            {
-                Name = createDto.Name,
-                Email = createDto.Email
-            };
-
-            var id = await studentRepository.CreateStudent(student);
-
-            var studentDto = new GetStudentDto
-            {
-                Id = id,
-                Name = student.Name,
-                Email = student.Email
-            };
+            var studentDto = await studentService.CreateStudent(createDto);
 
             return CreatedAtAction(
                 nameof(GetStudentById),
-                new { id },
+                new { id = studentDto.Id },
                 studentDto
             );
         }
 
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateStudent(int id, UpdateStudentDto updateDto)
         {
-            var student = new Student
-            {
-                Id = id,
-                Name = updateDto.Name,
-                Email = updateDto.Email
-            };
+            bool updated = await studentService.UpdateStudent(id, updateDto);
 
-            var rowsAffected = await studentRepository.UpdateStudent(student);
-
-            if (rowsAffected == 0)
+            if (!updated)
                 return NotFound();
 
             return NoContent();
         }
 
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(int id)
         {
-            var deleted = await studentRepository.DeleteStudent(id);
+            var deleted = await studentService.DeleteStudent(id);
 
             if (!deleted)
                 return NotFound();
