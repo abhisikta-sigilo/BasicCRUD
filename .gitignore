@@ -87,3 +87,7 @@ docker-compose.yml
 # local appsettings file of web and test project
 *.Local.json
 *.Test.json
+
+
+###########
+*.cache
