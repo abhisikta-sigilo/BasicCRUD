@@ -20,7 +20,7 @@ namespace StudentManagementSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetStudentDto>> GetStudentById(int id)
         {
-            GetStudentDto student = await studentService.GetStudentById(id);
+            GetStudentDto? student = await studentService.GetStudentById(id);
 
             if (student == null)
                 return NotFound();

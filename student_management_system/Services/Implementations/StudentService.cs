@@ -24,7 +24,7 @@ namespace StudentManagementSystem.Services.Implementations
 
         public async Task<GetStudentDto?> GetStudentById(int id)
         {
-            Student student = await studentRepository.GetStudentById(id);
+            Student? student = await studentRepository.GetStudentById(id);
 
             if (student == null)
                 return null;

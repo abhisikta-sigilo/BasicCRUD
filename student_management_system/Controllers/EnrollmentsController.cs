@@ -22,11 +22,10 @@ namespace StudentManagementSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetEnrollmentDto>> GetEnrollmentById(int id)
         {
-            GetEnrollmentDto enrollmentDto = await enrollmentService.GetEnrollmentById(id);
+            GetEnrollmentDto? enrollmentDto = await enrollmentService.GetEnrollmentById(id);
 
             if (enrollmentDto == null)
                 return NotFound();
-
 
             return Ok(enrollmentDto);
         }

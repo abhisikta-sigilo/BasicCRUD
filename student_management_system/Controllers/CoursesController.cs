@@ -21,7 +21,12 @@ namespace StudentManagementSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetCourseDto>> GetCourseById(int id)
         {
-            GetCourseDto course = await courseService.GetCourseById(id);
+            GetCourseDto? course = await courseService.GetCourseById(id);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
 
             return Ok(course);
         }
