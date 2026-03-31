@@ -1,5 +1,6 @@
 using StudentManagementSystem.Data;
 using StudentManagementSystem.Repositories;
+using StudentManagementSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,10 @@ builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+
+
+builder.Services.AddScoped<ICourseService, CourseService>();
+
 
 
 

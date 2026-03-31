@@ -1,74 +1,43 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Models;
-using StudentManagementSystem.Repositories;
+using StudentManagementSystem.Services;
 
 namespace StudentManagementSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CourseController(ICourseRepository courseRepository) : ControllerBase
+    public class CourseController(ICourseService courseService) : ControllerBase
     {
         [HttpGet]
         // This endpoint returns a list of GetCourseDto objects
         public async Task<ActionResult<IEnumerable<GetCourseDto>>> GetAllCourses()
         {
-            // get entities from database
-            var courses = await courseRepository.GetAllCourses();
+            var courses = await courseService.GetAllCourses();
 
-            // convert the entities into dtos
-            var courseDtos = courses.Select(c => new GetCourseDto
-            {
-                Id = c.Id,
-                CourseName = c.CourseName
-            });
-            return Ok(courseDtos);
+            return Ok(courses);
         }
 
 
         [HttpGet("{id}")]
-
-        // This endpoint returns one GetCourseDto object
         public async Task<ActionResult<GetCourseDto>> GetCourseById(int id)
         {
-            var course = await courseRepository.GetCourseById(id);
+            var course = await courseService.GetCourseById(id);
 
-            if (course == null)
-                return NotFound();
-
-            // to dto
-            var courseDto = new GetCourseDto
-            {
-                Id = course.Id,
-                CourseName = course.CourseName
-            };
-
-            return Ok(courseDto);
+            return Ok(course);
         }
 
 
         [HttpPost]
         public async Task<ActionResult<GetCourseDto>> CreateCourse(CreateCourseDto createDto)
         {
-            // convert CreateCourseDto to Course Entity
-            var course = new Course
-            {
-                CourseName = createDto.CourseName
-            };
 
-            // save course to database
-            var id = await courseRepository.CreateCourse(course);
-
-            // convert entity to GetCourseDto
-            var courseDto = new GetCourseDto
-            {
-                Id = id,
-                CourseName = course.CourseName
-            };
+            var courseDto = await courseService.CreateCourse(createDto);
 
             // return 201 created
-            return CreatedAtAction(nameof(GetCourseById), new { id }, courseDto);
+            return CreatedAtAction(nameof(GetCourseById), new { id = courseDto.Id }, courseDto);
 
         }
 
@@ -76,16 +45,12 @@ namespace StudentManagementSystem.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCourse(int id, UpdateCourseDto updateDto)
         {
-            var course = new Course
+            var updated = await courseService.UpdateCourse(id, updateDto);
+
+            if (!updated)
             {
-                Id = id,
-                CourseName = updateDto.CourseName
-            };
-
-            var rows = await courseRepository.UpdateCourse(course);
-
-            if (rows == 0)
                 return NotFound();
+            }
 
             return NoContent();
         }
@@ -94,7 +59,7 @@ namespace StudentManagementSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
-            var deleted = await courseRepository.DeleteCourse(id);
+            var deleted = await courseService.DeleteCourse(id);
 
             if (!deleted)
             {
