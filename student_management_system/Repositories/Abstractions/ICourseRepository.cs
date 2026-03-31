@@ -1,10 +1,10 @@
 ﻿using StudentManagementSystem.Models;
 
-namespace StudentManagementSystem.Repositories
+namespace StudentManagementSystem.Repositories.Abstractions
 {
     public interface ICourseRepository
     {
-        Task<List<Course>> GetAllCourses();
+        Task<IEnumerable<Course>> GetCourses();
         Task<Course?> GetCourseById(int id);
         Task<int> CreateCourse(Course course); // returns created course id
         Task<int> UpdateCourse(Course course); // returns rows affected

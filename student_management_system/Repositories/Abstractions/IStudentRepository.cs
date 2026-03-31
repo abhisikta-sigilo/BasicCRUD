@@ -1,10 +1,10 @@
 ﻿using StudentManagementSystem.Models;
 
-namespace StudentManagementSystem.Repositories
+namespace StudentManagementSystem.Repositories.Abstractions
 {
     public interface IStudentRepository
     {
-        Task<List<Student>> GetAllStudents();
+        Task<IEnumerable<Student>> GetStudents();
         Task<Student?> GetStudentById(int id);
         Task<int> CreateStudent(Student student);
         Task<int> UpdateStudent(Student student);

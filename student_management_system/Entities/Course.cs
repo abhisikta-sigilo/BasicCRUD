@@ -7,5 +7,5 @@ public class Course
     public int Id { get; set; }
     public string CourseName { get; set; }
 
-    public List<Enrollment> Enrollments { get; set; }
+    public IEnumerable<Enrollment> Enrollments { get; set; }
 }

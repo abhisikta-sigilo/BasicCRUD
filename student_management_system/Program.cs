@@ -1,5 +1,8 @@
 using StudentManagementSystem.Data;
-using StudentManagementSystem.Repositories;
+using StudentManagementSystem.Repositories.Abstractions;
+using StudentManagementSystem.Repositories.Implementations;
+using StudentManagementSystem.Services.Abstractions;
+using StudentManagementSystem.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,10 @@ builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 
 
 
