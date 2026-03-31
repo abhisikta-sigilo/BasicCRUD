@@ -15,7 +15,7 @@ namespace StudentManagementSystem.Controllers
         public async Task<ActionResult<IEnumerable<GetCourseDto>>> GetAllCourses()
         {
             // get entities from database
-            var courses = await courseRepository.GetAllAsync();
+            var courses = await courseRepository.GetAllCourses();
 
             // convert the entities into dtos
             var courseDtos = courses.Select(c => new GetCourseDto
@@ -30,9 +30,9 @@ namespace StudentManagementSystem.Controllers
         [HttpGet("{id}")]
 
         // This endpoint returns one GetCourseDto object
-        public async Task<ActionResult<GetCourseDto>> GetCourse(int id)
+        public async Task<ActionResult<GetCourseDto>> GetCourseById(int id)
         {
-            var course = await courseRepository.GetByIdAsync(id);
+            var course = await courseRepository.GetCourseById(id);
 
             if (course == null)
                 return NotFound();
@@ -58,7 +58,7 @@ namespace StudentManagementSystem.Controllers
             };
 
             // save course to database
-            var id = await courseRepository.CreateAsync(course);
+            var id = await courseRepository.CreateCourse(course);
 
             // convert entity to GetCourseDto
             var courseDto = new GetCourseDto
@@ -68,7 +68,7 @@ namespace StudentManagementSystem.Controllers
             };
 
             // return 201 created
-            return CreatedAtAction(nameof(GetCourse), new { id }, courseDto);
+            return CreatedAtAction(nameof(GetCourseById), new { id }, courseDto);
 
         }
 
@@ -82,7 +82,7 @@ namespace StudentManagementSystem.Controllers
                 CourseName = updateDto.CourseName
             };
 
-            var rows = await courseRepository.UpdateAsync(course);
+            var rows = await courseRepository.UpdateCourse(course);
 
             if (rows == 0)
                 return NotFound();
@@ -94,7 +94,7 @@ namespace StudentManagementSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
-            var deleted = await courseRepository.DeleteAsync(id);
+            var deleted = await courseRepository.DeleteCourse(id);
 
             if (!deleted)
             {
