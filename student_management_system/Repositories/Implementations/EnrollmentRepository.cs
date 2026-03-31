@@ -1,9 +1,9 @@
 ﻿using Dapper;
-using Microsoft.Data.SqlClient;
 using StudentManagementSystem.Data;
 using StudentManagementSystem.Models;
+using StudentManagementSystem.Repositories.Abstractions;
 
-namespace StudentManagementSystem.Repositories
+namespace StudentManagementSystem.Repositories.Implementations
 {
     public class EnrollmentRepository : IEnrollmentRepository
     {

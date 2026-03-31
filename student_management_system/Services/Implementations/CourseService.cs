@@ -1,6 +1,6 @@
 ﻿using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Models;
-using StudentManagementSystem.Repositories;
+using StudentManagementSystem.Repositories.Abstractions;
 using StudentManagementSystem.Services.Abstractions;
 
 namespace StudentManagementSystem.Services.Implementations
@@ -8,7 +8,6 @@ namespace StudentManagementSystem.Services.Implementations
     // services call repositories to fetch/store entities/to database
     public class CourseService(ICourseRepository courseRepository) : ICourseService
     {
-
         public async Task<IEnumerable<GetCourseDto>> GetAllCourses()
         {
             var courses = await courseRepository.GetAllCourses();

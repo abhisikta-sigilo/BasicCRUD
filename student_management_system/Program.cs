@@ -1,5 +1,6 @@
 using StudentManagementSystem.Data;
-using StudentManagementSystem.Repositories;
+using StudentManagementSystem.Repositories.Abstractions;
+using StudentManagementSystem.Repositories.Implementations;
 using StudentManagementSystem.Services.Abstractions;
 using StudentManagementSystem.Services.Implementations;
 

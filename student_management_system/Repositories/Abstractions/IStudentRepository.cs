@@ -1,6 +1,6 @@
 ﻿using StudentManagementSystem.Models;
 
-namespace StudentManagementSystem.Repositories
+namespace StudentManagementSystem.Repositories.Abstractions
 {
     public interface IStudentRepository
     {

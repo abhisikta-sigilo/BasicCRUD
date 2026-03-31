@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using StudentManagementSystem.Data;
 using StudentManagementSystem.Models;
+using StudentManagementSystem.Repositories.Abstractions;
 
 namespace StudentManagementSystem.Repositories
 {

@@ -1,6 +1,6 @@
 ﻿using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Models;
-using StudentManagementSystem.Repositories;
+using StudentManagementSystem.Repositories.Abstractions;
 using StudentManagementSystem.Services.Abstractions;
 
 namespace StudentManagementSystem.Services.Implementations
