@@ -4,10 +4,10 @@ namespace StudentManagementSystem.Repositories
 {
     public interface IEnrollmentRepository
     {
-        Task<List<Enrollment>> GetAllAsync();
-        Task<Enrollment?> GetByIdAsync(int id);
-        Task<int> CreateAsync(Enrollment enrollment);
-        Task<int> UpdateAsync(Enrollment enrollment);
-        Task<bool> DeleteAsync(int id);
+        Task<List<Enrollment>> GetAllEnrollments();
+        Task<Enrollment?> GetEnrollmentById(int id);
+        Task<int> CreateEnrollment(Enrollment enrollment);
+        Task<int> UpdateEnrollment(Enrollment enrollment);
+        Task<bool> DeleteEnrollment(int id);
     }
 }

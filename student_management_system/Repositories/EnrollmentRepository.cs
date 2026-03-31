@@ -14,7 +14,7 @@ namespace StudentManagementSystem.Repositories
             _context = context;
         }
 
-        public async Task<List<Enrollment>> GetAllAsync()
+        public async Task<List<Enrollment>> GetAllEnrollments()
         {
             using var connection = _context.CreateConnection();
 
@@ -25,7 +25,7 @@ namespace StudentManagementSystem.Repositories
             return enrollments.ToList();
         }
 
-        public async Task<Enrollment?> GetByIdAsync(int id)
+        public async Task<Enrollment?> GetEnrollmentById(int id)
         {
             using var connection = _context.CreateConnection();
 
@@ -34,7 +34,7 @@ namespace StudentManagementSystem.Repositories
             return await connection.QueryFirstOrDefaultAsync<Enrollment>(query, new { Id = id });
         }
 
-        public async Task<int> CreateAsync(Enrollment enrollment)
+        public async Task<int> CreateEnrollment(Enrollment enrollment)
         {
             using var connection = _context.CreateConnection();
 
@@ -45,7 +45,7 @@ namespace StudentManagementSystem.Repositories
             return await connection.ExecuteScalarAsync<int>(query, enrollment);
         }
 
-        public async Task<int> UpdateAsync(Enrollment enrollment)
+        public async Task<int> UpdateEnrollment(Enrollment enrollment)
         {
             using var connection = _context.CreateConnection();
 
@@ -60,7 +60,7 @@ namespace StudentManagementSystem.Repositories
             return rowsAffected;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteEnrollment(int id)
         {
             using var connection = _context.CreateConnection();
 

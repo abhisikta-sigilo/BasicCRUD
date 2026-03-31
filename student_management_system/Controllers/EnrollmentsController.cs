@@ -11,11 +11,11 @@ namespace StudentManagementSystem.Controllers
     {
         [HttpGet]
         // This endpoint returns a list of GetCourseDto objects
-        public async Task<ActionResult<IEnumerable<GetEnrollmentDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<GetEnrollmentDto>>> GetAllEnrollments()
         {
 
             // get entities from database
-            var enrollments = await enrollmentRepository.GetAllAsync();
+            var enrollments = await enrollmentRepository.GetAllEnrollments();
 
 
             // get entities from database
@@ -31,9 +31,9 @@ namespace StudentManagementSystem.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetEnrollmentDto>> GetById(int id)
+        public async Task<ActionResult<GetEnrollmentDto>> GetEnrollmentById(int id)
         {
-            var enrollment = await enrollmentRepository.GetByIdAsync(id);
+            var enrollment = await enrollmentRepository.GetEnrollmentById(id);
 
             if (enrollment == null)
                 return NotFound();
@@ -50,7 +50,7 @@ namespace StudentManagementSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetEnrollmentDto>> Create(CreateEnrollmentDto createDto)
+        public async Task<ActionResult<GetEnrollmentDto>> CreateEnrollment(CreateEnrollmentDto createDto)
         {
 
             // convert CreateEnrollmentDto to Enrollment Entity
@@ -62,7 +62,7 @@ namespace StudentManagementSystem.Controllers
             };
 
             // save course to database
-            var id = await enrollmentRepository.CreateAsync(enrollment);
+            var id = await enrollmentRepository.CreateEnrollment(enrollment);
 
 
             // convert entity to GetEnrollmentDto
@@ -75,14 +75,14 @@ namespace StudentManagementSystem.Controllers
             };
 
             return CreatedAtAction(
-                nameof(GetById),
+                nameof(GetEnrollmentById),
                 new { id },
                 enrollmentDto
             );
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateEnrollmentDto updateDto)
+        public async Task<IActionResult> UpdateEnrollment(int id, UpdateEnrollmentDto updateDto)
         {
             var enrollment = new Enrollment
             {
@@ -92,7 +92,7 @@ namespace StudentManagementSystem.Controllers
                 Percentage = updateDto.Percentage
             };
 
-            var rows = await enrollmentRepository.UpdateAsync(enrollment);
+            var rows = await enrollmentRepository.UpdateEnrollment(enrollment);
 
             if (rows == 0)
                 return NotFound();
@@ -101,9 +101,9 @@ namespace StudentManagementSystem.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteEnrollment(int id)
         {
-            var deleted = await enrollmentRepository.DeleteAsync(id);
+            var deleted = await enrollmentRepository.DeleteEnrollment(id);
 
             if (!deleted)
                 return NotFound();
