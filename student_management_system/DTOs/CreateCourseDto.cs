@@ -6,6 +6,6 @@ namespace StudentManagementSystem.DTOs
     {
         [Required]
         [MaxLength(100)]
-        public string CourseName { get; set; }
+        public required string CourseName { get; set; }
     }
 }
