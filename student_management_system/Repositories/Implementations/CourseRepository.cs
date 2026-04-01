@@ -33,8 +33,8 @@ namespace StudentManagementSystem.Repositories.Implementations
             using IDbConnection connection = context.CreateConnection();
 
             string query = @"INSERT INTO Courses (CourseName)
-                          VALUES (@CourseName);
-                          SELECT CAST(SCOPE_IDENTITY() as int);";
+                            VALUES (@CourseName);
+                            SELECT CAST(SCOPE_IDENTITY() as int);";
 
             return await connection.ExecuteScalarAsync<int>(query, course);
         }
@@ -44,8 +44,8 @@ namespace StudentManagementSystem.Repositories.Implementations
             using IDbConnection connection = context.CreateConnection();
 
             string query = @"UPDATE Courses
-                          SET CourseName = @CourseName
-                          WHERE Id = @Id";
+                            SET CourseName = @CourseName
+                            WHERE Id = @Id";
 
             int rowsAffected = await connection.ExecuteAsync(query, course);
 

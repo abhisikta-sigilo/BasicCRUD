@@ -44,10 +44,10 @@ namespace StudentManagementSystem.Repositories.Implementations
             using IDbConnection connection = context.CreateConnection();
 
             string query = @"UPDATE Enrollments
-                          SET StudentId = @StudentId,
-                              CourseId = @CourseId,
-                              Percentage = @Percentage
-                          WHERE Id = @Id";
+                            SET StudentId = @StudentId,
+                                CourseId = @CourseId,
+                                Percentage = @Percentage
+                            WHERE Id = @Id";
 
             int rowsAffected = await connection.ExecuteAsync(query, enrollment);
 

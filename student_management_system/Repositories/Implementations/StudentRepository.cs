@@ -12,8 +12,9 @@ namespace StudentManagementSystem.Repositories.Implementations
         {
             using IDbConnection connection = context.CreateConnection();
 
-            IEnumerable<Student> students = await connection
-                .QueryAsync<Student>("SELECT * FROM Students");
+            string query = "SELECT * FROM Students";
+
+            IEnumerable<Student> students = await connection.QueryAsync<Student>(query);
 
             return students.ToList();
         }
@@ -45,9 +46,9 @@ namespace StudentManagementSystem.Repositories.Implementations
             using IDbConnection connection = context.CreateConnection();
 
             string query = @"UPDATE Students
-                          SET Name = @Name,
-                              Email = @Email
-                          WHERE Id = @Id";
+                            SET Name = @Name,
+                                Email = @Email
+                            WHERE Id = @Id";
 
             int rowsAffected = await connection.ExecuteAsync(query, student);
 
@@ -58,9 +59,9 @@ namespace StudentManagementSystem.Repositories.Implementations
         {
             using IDbConnection connection = context.CreateConnection();
 
-            int rowsAffected = await connection.ExecuteAsync(
-                "DELETE FROM Students WHERE Id = @Id",
-                new { Id = id });
+            string query = "DELETE FROM Students WHERE Id = @Id";
+
+            int rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
 
             return rowsAffected > 0;
         }
