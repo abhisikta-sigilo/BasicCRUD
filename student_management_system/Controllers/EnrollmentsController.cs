@@ -19,7 +19,7 @@ namespace StudentManagementSystem.Controllers
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{enrollmentId}")]
         public async Task<ActionResult<EnrollmentResponseDto>> GetEnrollmentById(int enrollmentId)
         {
             EnrollmentResponseDto? enrollmentDto = await enrollmentService.GetEnrollmentById(enrollmentId);
@@ -43,7 +43,7 @@ namespace StudentManagementSystem.Controllers
             );
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{enrollmentId}")]
         public async Task<IActionResult> UpdateEnrollment(int enrollmentId, UpdateEnrollmentDto updateDto)
         {
             bool updated = await enrollmentService.UpdateEnrollment(enrollmentId, updateDto);
@@ -55,7 +55,7 @@ namespace StudentManagementSystem.Controllers
         }
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{enrollmentId}")]
         public async Task<IActionResult> DeleteEnrollment(int enrollmentId)
         {
             bool deleted = await enrollmentService.DeleteEnrollment(enrollmentId);
