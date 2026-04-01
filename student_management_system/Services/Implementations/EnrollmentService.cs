@@ -7,14 +7,14 @@ namespace StudentManagementSystem.Services.Implementations
 {
     public class EnrollmentService(IEnrollmentRepository enrollmentRepository) : IEnrollmentService
     {
-        public async Task<IEnumerable<GetEnrollmentDto>> GetEnrollments()
+        public async Task<IEnumerable<EnrollmentResponseDto>> GetEnrollments()
         {
             // get entities from database
             IEnumerable<Enrollment> enrollments = await enrollmentRepository.GetEnrollments();
 
 
             // get entities from database
-            IEnumerable<GetEnrollmentDto> enrollmentDtos = enrollments.Select(e => new GetEnrollmentDto
+            IEnumerable<EnrollmentResponseDto> enrollmentDtos = enrollments.Select(e => new EnrollmentResponseDto
             {
                 Id = e.Id,
                 StudentId = e.StudentId,
@@ -26,14 +26,14 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<GetEnrollmentDto?> GetEnrollmentById(int id)
+        public async Task<EnrollmentResponseDto?> GetEnrollmentById(int id)
         {
             Enrollment? enrollment = await enrollmentRepository.GetEnrollmentById(id);
 
             if (enrollment == null)
                 return null;
 
-            GetEnrollmentDto enrollmentDto = new GetEnrollmentDto
+            EnrollmentResponseDto enrollmentDto = new EnrollmentResponseDto
             {
                 Id = enrollment.Id,
                 StudentId = enrollment.StudentId,
@@ -45,7 +45,7 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<GetEnrollmentDto> CreateEnrollment(CreateEnrollmentDto createDto)
+        public async Task<EnrollmentResponseDto> CreateEnrollment(CreateEnrollmentDto createDto)
         {
             // convert CreateEnrollmentDto to Enrollment Entity
             Enrollment enrollment = new Enrollment
@@ -59,8 +59,8 @@ namespace StudentManagementSystem.Services.Implementations
             int id = await enrollmentRepository.CreateEnrollment(enrollment);
 
 
-            // convert entity to GetEnrollmentDto
-            GetEnrollmentDto enrollmentDto = new GetEnrollmentDto
+            // convert entity to EnrollmentResponseDto
+            EnrollmentResponseDto enrollmentDto = new EnrollmentResponseDto
             {
                 Id = id,
                 StudentId = enrollment.StudentId,

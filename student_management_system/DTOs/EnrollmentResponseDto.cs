@@ -1,6 +1,6 @@
 ﻿namespace StudentManagementSystem.DTOs
 {
-    public class GetEnrollmentDto
+    public class EnrollmentResponseDto
     {
         public int Id { get; set; }
         public int StudentId { get; set; }

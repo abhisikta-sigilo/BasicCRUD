@@ -9,18 +9,18 @@ namespace StudentManagementSystem.Controllers
     public class StudentsController(IStudentService studentService) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetStudentDto>>> GetStudents()
+        public async Task<ActionResult<IEnumerable<StudentResponseDto>>> GetStudents()
         {
-            IEnumerable<GetStudentDto> studentsDtos = await studentService.GetStudents();
+            IEnumerable<StudentResponseDto> studentsDtos = await studentService.GetStudents();
 
             return Ok(studentsDtos);
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetStudentDto>> GetStudentById(int id)
+        public async Task<ActionResult<StudentResponseDto>> GetStudentById(int id)
         {
-            GetStudentDto? student = await studentService.GetStudentById(id);
+            StudentResponseDto? student = await studentService.GetStudentById(id);
 
             if (student == null)
                 return NotFound();
@@ -30,9 +30,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<GetStudentDto>> CreateStudent(CreateStudentDto createDto)
+        public async Task<ActionResult<StudentResponseDto>> CreateStudent(CreateStudentDto createDto)
         {
-            GetStudentDto studentDto = await studentService.CreateStudent(createDto);
+            StudentResponseDto studentDto = await studentService.CreateStudent(createDto);
 
             return CreatedAtAction(
                 nameof(GetStudentById),
@@ -67,9 +67,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpGet("{id}/courses")]
-        public async Task<ActionResult<IEnumerable<GetCourseDto>>> GetCoursesByStudentId(int id)
+        public async Task<ActionResult<IEnumerable<CourseResponseDto>>> GetCoursesByStudentId(int id)
         {
-            IEnumerable<GetCourseDto> courses = await studentService.GetCoursesByStudentId(id);
+            IEnumerable<CourseResponseDto> courses = await studentService.GetCoursesByStudentId(id);
 
             if (!courses.Any())
                 return NotFound();

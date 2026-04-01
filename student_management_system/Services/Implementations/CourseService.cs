@@ -9,12 +9,12 @@ namespace StudentManagementSystem.Services.Implementations
     // services call repositories to fetch/store entities/to database
     public class CourseService(ICourseRepository courseRepository) : ICourseService
     {
-        public async Task<IEnumerable<GetCourseDto>> GetCourses()
+        public async Task<IEnumerable<CourseResponseDto>> GetCourses()
         {
             IEnumerable<Course> courses = await courseRepository.GetCourses();
 
             // convert the entities into dtos
-            IEnumerable<GetCourseDto> courseDtos = courses.Select(c => new GetCourseDto
+            IEnumerable<CourseResponseDto> courseDtos = courses.Select(c => new CourseResponseDto
             {
                 Id = c.Id,
                 CourseName = c.CourseName
@@ -24,7 +24,7 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<GetCourseDto?> GetCourseById(int id)
+        public async Task<CourseResponseDto?> GetCourseById(int id)
         {
             Course? course = await courseRepository.GetCourseById(id);
 
@@ -32,7 +32,7 @@ namespace StudentManagementSystem.Services.Implementations
                 return null;
 
             // to dto
-            GetCourseDto courseDto = new GetCourseDto
+            CourseResponseDto courseDto = new CourseResponseDto
             {
                 Id = course.Id,
                 CourseName = course.CourseName
@@ -42,7 +42,7 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<GetCourseDto> CreateCourse(CreateCourseDto createDto)
+        public async Task<CourseResponseDto> CreateCourse(CreateCourseDto createDto)
         {
             // convert CreateCourseDto to Course Entity
             Course course = new Course
@@ -53,8 +53,8 @@ namespace StudentManagementSystem.Services.Implementations
             // save course to database
             int id = await courseRepository.CreateCourse(course);
 
-            // convert entity to GetCourseDto
-            GetCourseDto courseDto = new GetCourseDto
+            // convert entity to CourseResponseDto
+            CourseResponseDto courseDto = new CourseResponseDto
             {
                 Id = id,
                 CourseName = course.CourseName
@@ -85,11 +85,11 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<IEnumerable<GetStudentDto>> GetStudentsByCourseId(int id)
+        public async Task<IEnumerable<StudentResponseDto>> GetStudentsByCourseId(int id)
         {
             IEnumerable<Student> students = await courseRepository.GetStudentsByCourseId(id);
 
-            IEnumerable<GetStudentDto> studentDtos = students.Select(s => new GetStudentDto
+            IEnumerable<StudentResponseDto> studentDtos = students.Select(s => new StudentResponseDto
             {
                 Id = s.Id,
                 Name = s.Name,

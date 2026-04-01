@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using StudentManagementSystem.Data;
+using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Models;
 using StudentManagementSystem.Repositories.Abstractions;
 using System.Data;

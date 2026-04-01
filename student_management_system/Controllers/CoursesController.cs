@@ -10,19 +10,19 @@ namespace StudentManagementSystem.Controllers
     public class CourseController(ICourseService courseService) : ControllerBase
     {
         [HttpGet]
-        // This endpoint returns a list of GetCourseDto objects
-        public async Task<ActionResult<IEnumerable<GetCourseDto>>> GetCourses()
+        // This endpoint returns a list of CourseResponseDto objects
+        public async Task<ActionResult<IEnumerable<CourseResponseDto>>> GetCourses()
         {
-            IEnumerable<GetCourseDto> courses = await courseService.GetCourses();
+            IEnumerable<CourseResponseDto> courses = await courseService.GetCourses();
 
             return Ok(courses);
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetCourseDto>> GetCourseById(int id)
+        public async Task<ActionResult<CourseResponseDto>> GetCourseById(int id)
         {
-            GetCourseDto? course = await courseService.GetCourseById(id);
+            CourseResponseDto? course = await courseService.GetCourseById(id);
 
             if (course == null)
             {
@@ -34,9 +34,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<GetCourseDto>> CreateCourse(CreateCourseDto createDto)
+        public async Task<ActionResult<CourseResponseDto>> CreateCourse(CreateCourseDto createDto)
         {
-            GetCourseDto courseDto = await courseService.CreateCourse(createDto);
+            CourseResponseDto courseDto = await courseService.CreateCourse(createDto);
 
             // return 201 created
             return CreatedAtAction(nameof(GetCourseById), new { id = courseDto.Id }, courseDto);
@@ -73,9 +73,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpGet("{id}/students")]
-        public async Task<ActionResult<IEnumerable<GetStudentDto>>> GetStudentsByCourseId(int id)
+        public async Task<ActionResult<IEnumerable<StudentResponseDto>>> GetStudentsByCourseId(int id)
         {
-            IEnumerable<GetStudentDto> students = await courseService.GetStudentsByCourseId(id);
+            IEnumerable<StudentResponseDto> students = await courseService.GetStudentsByCourseId(id);
 
             if (!students.Any())
                 return NotFound();

@@ -7,11 +7,11 @@ namespace StudentManagementSystem.Services.Implementations
 {
     public class StudentService(IStudentRepository studentRepository) : IStudentService
     {
-        public async Task<IEnumerable<GetStudentDto>> GetStudents()
+        public async Task<IEnumerable<StudentResponseDto>> GetStudents()
         {
             IEnumerable<Student> students = await studentRepository.GetStudents();
 
-            IEnumerable<GetStudentDto> studentDtos = students.Select(s => new GetStudentDto
+            IEnumerable<StudentResponseDto> studentDtos = students.Select(s => new StudentResponseDto
             {
                 Id = s.Id,
                 Name = s.Name,
@@ -22,14 +22,14 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<GetStudentDto?> GetStudentById(int id)
+        public async Task<StudentResponseDto?> GetStudentById(int id)
         {
             Student? student = await studentRepository.GetStudentById(id);
 
             if (student == null)
                 return null;
 
-            GetStudentDto studentDto = new GetStudentDto
+            StudentResponseDto studentDto = new StudentResponseDto
             {
                 Id = student.Id,
                 Name = student.Name,
@@ -40,7 +40,7 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<GetStudentDto> CreateStudent(CreateStudentDto createDto)
+        public async Task<StudentResponseDto> CreateStudent(CreateStudentDto createDto)
         {
             Student student = new Student
             {
@@ -50,7 +50,7 @@ namespace StudentManagementSystem.Services.Implementations
 
             int id = await studentRepository.CreateStudent(student);
 
-            GetStudentDto studentDto = new GetStudentDto
+            StudentResponseDto studentDto = new StudentResponseDto
             {
                 Id = id,
                 Name = student.Name,
@@ -84,11 +84,11 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<IEnumerable<GetCourseDto>> GetCoursesByStudentId(int id)
+        public async Task<IEnumerable<CourseResponseDto>> GetCoursesByStudentId(int id)
         {
             IEnumerable<Course> courses = await studentRepository.GetCoursesByStudentId(id);
 
-            IEnumerable<GetCourseDto> courseDtos = courses.Select(c => new GetCourseDto
+            IEnumerable<CourseResponseDto> courseDtos = courses.Select(c => new CourseResponseDto
             {
                 Id = c.Id,
                 CourseName = c.CourseName

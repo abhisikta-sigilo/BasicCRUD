@@ -1,6 +1,6 @@
 ﻿namespace StudentManagementSystem.DTOs
 {
-    public class GetCourseDto
+    public class CourseResponseDto
     {
         public int Id { get; set; }
         public required string CourseName { get; set; }
