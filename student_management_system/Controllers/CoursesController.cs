@@ -75,9 +75,9 @@ namespace StudentManagementSystem.Controllers
         [HttpGet("{courseId}/students")]
         public async Task<ActionResult<IEnumerable<StudentResponseDto>>> GetStudentsByCourseId(int courseId)
         {
-            IEnumerable<StudentResponseDto> students = await courseService.GetStudentsByCourseId(courseId);
+            IEnumerable<StudentResponseDto>? students = await courseService.GetStudentsByCourseId(courseId);
 
-            if (!students.Any())
+            if (students == null)
                 return NotFound();
 
             return Ok(students);

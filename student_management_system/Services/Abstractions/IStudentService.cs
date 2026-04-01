@@ -9,6 +9,6 @@ namespace StudentManagementSystem.Services.Abstractions
         Task<StudentResponseDto> CreateStudent(CreateStudentDto createDto);
         Task<bool> UpdateStudent(int studentId, UpdateStudentDto updateDto);
         Task<bool> DeleteStudent(int studentId);
-        Task<IEnumerable<CourseResponseDto>> GetCoursesByStudentId(int studentId);
+        Task<IEnumerable<CourseResponseDto>?> GetCoursesByStudentId(int studentId);
     }
 }

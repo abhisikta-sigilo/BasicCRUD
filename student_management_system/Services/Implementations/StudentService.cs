@@ -84,9 +84,12 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<IEnumerable<CourseResponseDto>> GetCoursesByStudentId(int studentId)
+        public async Task<IEnumerable<CourseResponseDto>?> GetCoursesByStudentId(int studentId)
         {
             IEnumerable<Course> courses = await studentRepository.GetCoursesByStudentId(studentId);
+
+            if (!courses.Any())
+                return null;
 
             IEnumerable<CourseResponseDto> courseDtos = courses.Select(c => new CourseResponseDto
             {
