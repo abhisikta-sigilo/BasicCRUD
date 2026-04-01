@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Services.Abstractions;
+using StudentManagementSystem.Services.Implementations;
 
 namespace StudentManagementSystem.Controllers
 {
@@ -70,5 +71,16 @@ namespace StudentManagementSystem.Controllers
             return NoContent();
         }
 
+
+        [HttpGet("{id}/students")]
+        public async Task<ActionResult<IEnumerable<GetStudentDto>>> GetStudentsByCourseId(int id)
+        {
+            IEnumerable<GetStudentDto> students = await courseService.GetStudentsByCourseId(id);
+
+            if (!students.Any())
+                return NotFound();
+
+            return Ok(students);
+        }
     }
 }

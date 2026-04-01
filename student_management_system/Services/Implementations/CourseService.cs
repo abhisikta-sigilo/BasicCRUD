@@ -1,6 +1,7 @@
 ﻿using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Models;
 using StudentManagementSystem.Repositories.Abstractions;
+using StudentManagementSystem.Repositories.Implementations;
 using StudentManagementSystem.Services.Abstractions;
 
 namespace StudentManagementSystem.Services.Implementations
@@ -81,6 +82,21 @@ namespace StudentManagementSystem.Services.Implementations
             bool deleted = await courseRepository.DeleteCourse(id);
 
             return deleted;
+        }
+
+
+        public async Task<IEnumerable<GetStudentDto>> GetStudentsByCourseId(int id)
+        {
+            IEnumerable<Student> students = await courseRepository.GetStudentsByCourseId(id);
+
+            IEnumerable<GetStudentDto> studentDtos = students.Select(s => new GetStudentDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Email = s.Email
+            });
+
+            return studentDtos;
         }
     }
 }
