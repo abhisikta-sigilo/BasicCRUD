@@ -5,9 +5,9 @@ namespace StudentManagementSystem.Repositories.Abstractions
     public interface IEnrollmentRepository
     {
         Task<IEnumerable<Enrollment>> GetEnrollments();
-        Task<Enrollment?> GetEnrollmentById(int id);
+        Task<Enrollment?> GetEnrollmentById(int enrollmentId);
         Task<int> CreateEnrollment(Enrollment enrollment);
         Task<int> UpdateEnrollment(Enrollment enrollment);
-        Task<bool> DeleteEnrollment(int id);
+        Task<bool> DeleteEnrollment(int enrollmentId);
     }
 }

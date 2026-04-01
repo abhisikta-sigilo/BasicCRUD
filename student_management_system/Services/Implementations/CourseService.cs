@@ -24,9 +24,9 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<CourseResponseDto?> GetCourseById(int id)
+        public async Task<CourseResponseDto?> GetCourseById(int courseId)
         {
-            Course? course = await courseRepository.GetCourseById(id);
+            Course? course = await courseRepository.GetCourseById(courseId);
 
             if (course == null)
                 return null;
@@ -63,11 +63,11 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<bool> UpdateCourse(int id, UpdateCourseDto updateDto)
+        public async Task<bool> UpdateCourse(int courseId, UpdateCourseDto updateDto)
         {
             Course course = new Course
             {
-                Id = id,
+                Id = courseId,
                 CourseName = updateDto.CourseName
             };
 
@@ -77,17 +77,17 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<bool> DeleteCourse(int id)
+        public async Task<bool> DeleteCourse(int courseId)
         {
-            bool deleted = await courseRepository.DeleteCourse(id);
+            bool deleted = await courseRepository.DeleteCourse(courseId);
 
             return deleted;
         }
 
 
-        public async Task<IEnumerable<StudentResponseDto>> GetStudentsByCourseId(int id)
+        public async Task<IEnumerable<StudentResponseDto>> GetStudentsByCourseId(int courseId)
         {
-            IEnumerable<Student> students = await courseRepository.GetStudentsByCourseId(id);
+            IEnumerable<Student> students = await courseRepository.GetStudentsByCourseId(courseId);
 
             IEnumerable<StudentResponseDto> studentDtos = students.Select(s => new StudentResponseDto
             {

@@ -20,9 +20,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CourseResponseDto>> GetCourseById(int id)
+        public async Task<ActionResult<CourseResponseDto>> GetCourseById(int courseId)
         {
-            CourseResponseDto? course = await courseService.GetCourseById(id);
+            CourseResponseDto? course = await courseService.GetCourseById(courseId);
 
             if (course == null)
             {
@@ -45,9 +45,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCourse(int id, UpdateCourseDto updateDto)
+        public async Task<IActionResult> UpdateCourse(int courseId, UpdateCourseDto updateDto)
         {
-            bool updated = await courseService.UpdateCourse(id, updateDto);
+            bool updated = await courseService.UpdateCourse(courseId, updateDto);
 
             if (!updated)
             {
@@ -59,9 +59,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCourse(int id)
+        public async Task<IActionResult> DeleteCourse(int courseId)
         {
-            bool deleted = await courseService.DeleteCourse(id);
+            bool deleted = await courseService.DeleteCourse(courseId);
 
             if (!deleted)
             {
@@ -73,9 +73,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpGet("{id}/students")]
-        public async Task<ActionResult<IEnumerable<StudentResponseDto>>> GetStudentsByCourseId(int id)
+        public async Task<ActionResult<IEnumerable<StudentResponseDto>>> GetStudentsByCourseId(int courseId)
         {
-            IEnumerable<StudentResponseDto> students = await courseService.GetStudentsByCourseId(id);
+            IEnumerable<StudentResponseDto> students = await courseService.GetStudentsByCourseId(courseId);
 
             if (!students.Any())
                 return NotFound();

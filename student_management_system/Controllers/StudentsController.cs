@@ -18,9 +18,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<StudentResponseDto>> GetStudentById(int id)
+        public async Task<ActionResult<StudentResponseDto>> GetStudentById(int studentId)
         {
-            StudentResponseDto? student = await studentService.GetStudentById(id);
+            StudentResponseDto? student = await studentService.GetStudentById(studentId);
 
             if (student == null)
                 return NotFound();
@@ -43,9 +43,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateStudent(int id, UpdateStudentDto updateDto)
+        public async Task<IActionResult> UpdateStudent(int studentId, UpdateStudentDto updateDto)
         {
-            bool updated = await studentService.UpdateStudent(id, updateDto);
+            bool updated = await studentService.UpdateStudent(studentId, updateDto);
 
             if (!updated)
                 return NotFound();
@@ -55,9 +55,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudent(int id)
+        public async Task<IActionResult> DeleteStudent(int studentId)
         {
-            bool deleted = await studentService.DeleteStudent(id);
+            bool deleted = await studentService.DeleteStudent(studentId);
 
             if (!deleted)
                 return NotFound();
@@ -67,9 +67,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpGet("{id}/courses")]
-        public async Task<ActionResult<IEnumerable<CourseResponseDto>>> GetCoursesByStudentId(int id)
+        public async Task<ActionResult<IEnumerable<CourseResponseDto>>> GetCoursesByStudentId(int studentId)
         {
-            IEnumerable<CourseResponseDto> courses = await studentService.GetCoursesByStudentId(id);
+            IEnumerable<CourseResponseDto> courses = await studentService.GetCoursesByStudentId(studentId);
 
             if (!courses.Any())
                 return NotFound();

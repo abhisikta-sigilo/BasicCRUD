@@ -20,13 +20,13 @@ namespace StudentManagementSystem.Repositories.Implementations
             return enrollments.ToList();
         }
 
-        public async Task<Enrollment?> GetEnrollmentById(int id)
+        public async Task<Enrollment?> GetEnrollmentById(int enrollmentId)
         {
             using IDbConnection connection = context.CreateConnection();
 
             string query = "SELECT * FROM Enrollments WHERE Id = @Id";
 
-            return await connection.QueryFirstOrDefaultAsync<Enrollment>(query, new { Id = id });
+            return await connection.QueryFirstOrDefaultAsync<Enrollment>(query, new { Id = enrollmentId });
         }
 
         public async Task<int> CreateEnrollment(Enrollment enrollment)
@@ -55,13 +55,13 @@ namespace StudentManagementSystem.Repositories.Implementations
             return rowsAffected;
         }
 
-        public async Task<bool> DeleteEnrollment(int id)
+        public async Task<bool> DeleteEnrollment(int enrollmentId)
         {
             using IDbConnection connection = context.CreateConnection();
 
             string query = "DELETE FROM Enrollments WHERE Id = @Id";
 
-            int rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
+            int rowsAffected = await connection.ExecuteAsync(query, new { Id = enrollmentId });
 
             return rowsAffected > 0;
         }

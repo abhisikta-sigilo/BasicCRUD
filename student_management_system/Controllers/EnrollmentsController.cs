@@ -20,9 +20,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<EnrollmentResponseDto>> GetEnrollmentById(int id)
+        public async Task<ActionResult<EnrollmentResponseDto>> GetEnrollmentById(int enrollmentId)
         {
-            EnrollmentResponseDto? enrollmentDto = await enrollmentService.GetEnrollmentById(id);
+            EnrollmentResponseDto? enrollmentDto = await enrollmentService.GetEnrollmentById(enrollmentId);
 
             if (enrollmentDto == null)
                 return NotFound();
@@ -44,9 +44,9 @@ namespace StudentManagementSystem.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEnrollment(int id, UpdateEnrollmentDto updateDto)
+        public async Task<IActionResult> UpdateEnrollment(int enrollmentId, UpdateEnrollmentDto updateDto)
         {
-            bool updated = await enrollmentService.UpdateEnrollment(id, updateDto);
+            bool updated = await enrollmentService.UpdateEnrollment(enrollmentId, updateDto);
 
             if (!updated)
                 return NotFound();
@@ -56,9 +56,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEnrollment(int id)
+        public async Task<IActionResult> DeleteEnrollment(int enrollmentId)
         {
-            bool deleted = await enrollmentService.DeleteEnrollment(id);
+            bool deleted = await enrollmentService.DeleteEnrollment(enrollmentId);
 
             if (!deleted)
                 return NotFound();

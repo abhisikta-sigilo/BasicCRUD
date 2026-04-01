@@ -26,9 +26,9 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<EnrollmentResponseDto?> GetEnrollmentById(int id)
+        public async Task<EnrollmentResponseDto?> GetEnrollmentById(int enrollmentId)
         {
-            Enrollment? enrollment = await enrollmentRepository.GetEnrollmentById(id);
+            Enrollment? enrollment = await enrollmentRepository.GetEnrollmentById(enrollmentId);
 
             if (enrollment == null)
                 return null;
@@ -72,11 +72,11 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<bool> UpdateEnrollment(int id, UpdateEnrollmentDto updateDto)
+        public async Task<bool> UpdateEnrollment(int enrollmentId, UpdateEnrollmentDto updateDto)
         {
             Enrollment enrollment = new Enrollment
             {
-                Id = id,
+                Id = enrollmentId,
                 StudentId = updateDto.StudentId,
                 CourseId = updateDto.CourseId,
                 Percentage = updateDto.Percentage
@@ -88,9 +88,9 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<bool> DeleteEnrollment(int id)
+        public async Task<bool> DeleteEnrollment(int enrollmentId)
         {
-            bool deleted = await enrollmentRepository.DeleteEnrollment(id);
+            bool deleted = await enrollmentRepository.DeleteEnrollment(enrollmentId);
 
             return deleted;
         }

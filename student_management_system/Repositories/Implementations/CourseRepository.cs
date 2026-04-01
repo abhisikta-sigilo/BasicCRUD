@@ -19,13 +19,13 @@ namespace StudentManagementSystem.Repositories.Implementations
             return courses.ToList();
         }
 
-        public async Task<Course?> GetCourseById(int id)
+        public async Task<Course?> GetCourseById(int courseId)
         {
             using IDbConnection connection = context.CreateConnection();
 
             string query = "SELECT * FROM Courses WHERE Id = @Id";
 
-            return await connection.QueryFirstOrDefaultAsync<Course>(query, new { Id = id });
+            return await connection.QueryFirstOrDefaultAsync<Course>(query, new { Id = courseId });
         }
 
         public async Task<int> CreateCourse(Course course)
@@ -52,18 +52,18 @@ namespace StudentManagementSystem.Repositories.Implementations
             return rowsAffected;
         }
 
-        public async Task<bool> DeleteCourse(int id)
+        public async Task<bool> DeleteCourse(int courseId)
         {
             using IDbConnection connection = context.CreateConnection();
 
             string query = "DELETE FROM Courses WHERE Id = @Id";
 
-            int rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
+            int rowsAffected = await connection.ExecuteAsync(query, new { Id = courseId });
 
             return rowsAffected > 0;
         }
 
-        public async Task<IEnumerable<Student>> GetStudentsByCourseId(int id)
+        public async Task<IEnumerable<Student>> GetStudentsByCourseId(int courseId)
         {
             using IDbConnection connection = context.CreateConnection();
 
@@ -72,7 +72,7 @@ namespace StudentManagementSystem.Repositories.Implementations
                             INNER JOIN Enrollments e ON s.Id = e.StudentId
                             WHERE e.CourseId = @Id";
 
-            IEnumerable<Student> students = await connection.QueryAsync<Student>(query, new { Id = id });
+            IEnumerable<Student> students = await connection.QueryAsync<Student>(query, new { Id = courseId });
 
             return students.ToList();
         }
