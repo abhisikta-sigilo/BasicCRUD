@@ -65,5 +65,19 @@ namespace StudentManagementSystem.Repositories.Implementations
 
             return rowsAffected > 0;
         }
+
+        public async Task<IEnumerable<Course>> GetCoursesByStudentId(int id)
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            string query = @"SELECT c.Id, c.CourseName
+                            FROM Courses c
+                            INNER JOIN Enrollments e ON c.Id = e.CourseId
+                            WHERE e.StudentId = @Id";
+
+            IEnumerable<Course> courses = await connection.QueryAsync<Course>(query, new { Id = id });
+
+            return courses.ToList();
+        }
     }
 }

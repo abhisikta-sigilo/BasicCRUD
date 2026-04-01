@@ -64,5 +64,17 @@ namespace StudentManagementSystem.Controllers
 
             return NoContent();
         }
+
+
+        [HttpGet("{id}/courses")]
+        public async Task<ActionResult<IEnumerable<GetCourseDto>>> GetCoursesByStudentId(int id)
+        {
+            IEnumerable<GetCourseDto> courses = await studentService.GetCoursesByStudentId(id);
+
+            if (!courses.Any())
+                return NotFound();
+
+            return Ok(courses);
+        }
     }
 }

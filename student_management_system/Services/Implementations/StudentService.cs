@@ -82,5 +82,19 @@ namespace StudentManagementSystem.Services.Implementations
 
             return deleted;
         }
+
+
+        public async Task<IEnumerable<GetCourseDto>> GetCoursesByStudentId(int id)
+        {
+            IEnumerable<Course> courses = await studentRepository.GetCoursesByStudentId(id);
+
+            IEnumerable<GetCourseDto> courseDtos = courses.Select(c => new GetCourseDto
+            {
+                Id = c.Id,
+                CourseName = c.CourseName
+            });
+
+            return courseDtos;
+        }
     }
 }

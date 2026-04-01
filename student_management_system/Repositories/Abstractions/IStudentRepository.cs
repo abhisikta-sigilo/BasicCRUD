@@ -9,5 +9,6 @@ namespace StudentManagementSystem.Repositories.Abstractions
         Task<int> CreateStudent(Student student);
         Task<int> UpdateStudent(Student student);
         Task<bool> DeleteStudent(int id);
+        Task<IEnumerable<Course>> GetCoursesByStudentId(int id);
     }
 }
