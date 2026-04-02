@@ -4,6 +4,9 @@ using StudentManagementSystem.Repositories.Implementations;
 using StudentManagementSystem.Services.Abstractions;
 using StudentManagementSystem.Services.Implementations;
 
+using StudentManagementSystem.Mappings;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -26,6 +29,13 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 
 
+//builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(
+    cfg => { },
+    //typeof(MappingProfile).Assembly
+    AppDomain.CurrentDomain.GetAssemblies()
+);
 
 var app = builder.Build();
 

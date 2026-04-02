@@ -1,24 +1,21 @@
-﻿using StudentManagementSystem.DTOs;
+﻿using AutoMapper;
+using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Models;
 using StudentManagementSystem.Repositories.Abstractions;
 using StudentManagementSystem.Services.Abstractions;
 
 namespace StudentManagementSystem.Services.Implementations
 {
-    public class StudentService(IStudentRepository studentRepository) : IStudentService
+    public class StudentService(
+        IStudentRepository studentRepository,
+        IMapper mapper
+    ) : IStudentService
     {
         public async Task<IEnumerable<StudentResponseDto>> GetStudents()
         {
             IEnumerable<Student> students = await studentRepository.GetStudents();
 
-            IEnumerable<StudentResponseDto> studentDtos = students.Select(s => new StudentResponseDto
-            {
-                Id = s.Id,
-                Name = s.Name,
-                Email = s.Email
-            });
-
-            return studentDtos;
+            return mapper.Map<IEnumerable<StudentResponseDto>>(students);
         }
 
 
@@ -29,33 +26,20 @@ namespace StudentManagementSystem.Services.Implementations
             if (student == null)
                 return null;
 
-            StudentResponseDto studentDto = new StudentResponseDto
-            {
-                Id = student.Id,
-                Name = student.Name,
-                Email = student.Email
-            };
-
-            return studentDto;
+            return mapper.Map<StudentResponseDto>(student);
         }
 
 
         public async Task<StudentResponseDto> CreateStudent(CreateStudentDto createDto)
         {
-            Student student = new Student
-            {
-                Name = createDto.Name,
-                Email = createDto.Email
-            };
+            // DTO -> Entity
+            Student student = mapper.Map<Student>(createDto);
 
             int id = await studentRepository.CreateStudent(student);
 
-            StudentResponseDto studentDto = new StudentResponseDto
-            {
-                Id = id,
-                Name = student.Name,
-                Email = student.Email
-            };
+            // Entity -> DTO
+            StudentResponseDto studentDto = mapper.Map<StudentResponseDto>(student);
+            studentDto.Id = id;
 
             return studentDto;
         }
@@ -63,16 +47,13 @@ namespace StudentManagementSystem.Services.Implementations
 
         public async Task<bool> UpdateStudent(int studentId, UpdateStudentDto updateDto)
         {
-            Student student = new Student
-            {
-                Id = studentId,
-                Name = updateDto.Name,
-                Email = updateDto.Email
-            };
+            Student student = mapper.Map<Student>(updateDto);
+            student.Id = studentId;
 
             int rowsAffected = await studentRepository.UpdateStudent(student);
 
             return rowsAffected > 0;
+
         }
 
 
@@ -91,13 +72,7 @@ namespace StudentManagementSystem.Services.Implementations
             if (!courses.Any())
                 return null;
 
-            IEnumerable<CourseResponseDto> courseDtos = courses.Select(c => new CourseResponseDto
-            {
-                Id = c.Id,
-                CourseName = c.CourseName
-            });
-
-            return courseDtos;
+            return mapper.Map<IEnumerable<CourseResponseDto>>(courses);
         }
     }
 }
