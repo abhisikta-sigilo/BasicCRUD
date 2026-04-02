@@ -1,26 +1,31 @@
-﻿using StudentManagementSystem.DTOs;
+﻿using AutoMapper;
+using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Models;
 using StudentManagementSystem.Repositories.Abstractions;
-using StudentManagementSystem.Repositories.Implementations;
 using StudentManagementSystem.Services.Abstractions;
 
 namespace StudentManagementSystem.Services.Implementations
 {
     // services call repositories to fetch/store entities/to database
-    public class CourseService(ICourseRepository courseRepository) : ICourseService
+    public class CourseService(
+        ICourseRepository courseRepository, 
+        IMapper mapper
+    ) : ICourseService
     {
         public async Task<IEnumerable<CourseResponseDto>> GetCourses()
         {
             IEnumerable<Course> courses = await courseRepository.GetCourses();
 
             // convert the entities into dtos
-            IEnumerable<CourseResponseDto> courseDtos = courses.Select(c => new CourseResponseDto
-            {
-                Id = c.Id,
-                CourseName = c.CourseName
-            });
+            //IEnumerable<CourseResponseDto> courseDtos = courses.Select(c => new CourseResponseDto
+            //{
+            //    Id = c.Id,
+            //    CourseName = c.CourseName
+            //});
 
-            return courseDtos;
+            //return courseDtos;
+
+            return mapper.Map<IEnumerable<CourseResponseDto>>(courses);
         }
 
 
@@ -32,44 +37,44 @@ namespace StudentManagementSystem.Services.Implementations
                 return null;
 
             // to dto
-            CourseResponseDto courseDto = new CourseResponseDto
-            {
-                Id = course.Id,
-                CourseName = course.CourseName
-            };
+            //CourseResponseDto courseDto = new CourseResponseDto
+            //{
+            //    Id = course.Id,
+            //    CourseName = course.CourseName
+            //};
 
-            return courseDto;
+            //return courseDto; new CourseResponseDto
+            //{
+            //    Id = course.Id,
+            //    CourseName = course.CourseName
+            //};
+
+            //return courseDto;
+
+            return mapper.Map<CourseResponseDto>(course);
         }
 
 
         public async Task<CourseResponseDto> CreateCourse(CreateCourseDto createDto)
         {
             // convert CreateCourseDto to Course Entity
-            Course course = new Course
-            {
-                CourseName = createDto.CourseName
-            };
+            Course course = mapper.Map<Course>(createDto);
 
             // save course to database
             int id = await courseRepository.CreateCourse(course);
 
             // convert entity to CourseResponseDto
-            CourseResponseDto courseDto = new CourseResponseDto
-            {
-                Id = id,
-                CourseName = course.CourseName
-            };
+            CourseResponseDto courseDto = mapper.Map<CourseResponseDto>(course);
+            courseDto.Id = id;
+
             return courseDto;
         }
 
 
         public async Task<bool> UpdateCourse(int courseId, UpdateCourseDto updateDto)
         {
-            Course course = new Course
-            {
-                Id = courseId,
-                CourseName = updateDto.CourseName
-            };
+            Course course = mapper.Map<Course>(updateDto);
+            course.Id = courseId;
 
             int rows = await courseRepository.UpdateCourse(course);
 
@@ -92,14 +97,7 @@ namespace StudentManagementSystem.Services.Implementations
             if (!students.Any())
                 return null;
 
-            IEnumerable<StudentResponseDto> studentDtos = students.Select(s => new StudentResponseDto
-            {
-                Id = s.Id,
-                Name = s.Name,
-                Email = s.Email
-            });
-
-            return studentDtos;
+            return mapper.Map<IEnumerable<StudentResponseDto>>(students);
         }
     }
 }

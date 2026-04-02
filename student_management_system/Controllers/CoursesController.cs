@@ -7,7 +7,7 @@ namespace StudentManagementSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CourseController(ICourseService courseService) : ControllerBase
+    public class CoursesController(ICourseService courseService) : ControllerBase
     {
         [HttpGet]
         // This endpoint returns a list of CourseResponseDto objects
@@ -19,7 +19,7 @@ namespace StudentManagementSystem.Controllers
         }
 
 
-        [HttpGet("{courseId}")]
+        [HttpGet("{courseId}", Name = "GetCourseById")]
         public async Task<ActionResult<CourseResponseDto>> GetCourseById(int courseId)
         {
             CourseResponseDto? course = await courseService.GetCourseById(courseId);
@@ -39,8 +39,10 @@ namespace StudentManagementSystem.Controllers
             CourseResponseDto courseDto = await courseService.CreateCourse(createDto);
 
             // return 201 created
-            return CreatedAtAction(nameof(GetCourseById), new { id = courseDto.Id }, courseDto);
-
+            return CreatedAtRoute(
+                "GetCourseById", 
+                new { courseId = courseDto.Id }, 
+                courseDto);
         }
 
 

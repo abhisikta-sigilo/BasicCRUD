@@ -19,7 +19,7 @@ namespace StudentManagementSystem.Controllers
         }
 
 
-        [HttpGet("{enrollmentId}")]
+        [HttpGet("{enrollmentId}", Name = "GetEnrollmentById")]
         public async Task<ActionResult<EnrollmentResponseDto>> GetEnrollmentById(int enrollmentId)
         {
             EnrollmentResponseDto? enrollmentDto = await enrollmentService.GetEnrollmentById(enrollmentId);
@@ -36,9 +36,9 @@ namespace StudentManagementSystem.Controllers
         {
             EnrollmentResponseDto enrollmentDto = await enrollmentService.CreateEnrollment(createDto);
 
-            return CreatedAtAction(
-                nameof(GetEnrollmentById),
-                new { id = enrollmentDto.Id },
+            return CreatedAtRoute(
+                "GetEnrollmentById",
+                new { enrollmentId = enrollmentDto.Id },
                 enrollmentDto
             );
         }

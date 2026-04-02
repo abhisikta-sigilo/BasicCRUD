@@ -13,8 +13,6 @@ namespace StudentManagementSystem.Repositories.Implementations
         {
             using IDbConnection connection = context.CreateConnection();
 
-            string query = "SELECT * FROM Courses";
-
             IEnumerable<Course> courses = await connection.QueryAsync<Course>(
                 CourseSqlQueries.GetCourses
             );

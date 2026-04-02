@@ -1,28 +1,22 @@
-﻿using StudentManagementSystem.DTOs;
+﻿using AutoMapper;
+using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Models;
 using StudentManagementSystem.Repositories.Abstractions;
 using StudentManagementSystem.Services.Abstractions;
 
 namespace StudentManagementSystem.Services.Implementations
 {
-    public class EnrollmentService(IEnrollmentRepository enrollmentRepository) : IEnrollmentService
+    public class EnrollmentService(
+        IEnrollmentRepository enrollmentRepository,
+        IMapper mapper
+    ) : IEnrollmentService
     {
         public async Task<IEnumerable<EnrollmentResponseDto>> GetEnrollments()
         {
             // get entities from database
             IEnumerable<Enrollment> enrollments = await enrollmentRepository.GetEnrollments();
 
-
-            // get entities from database
-            IEnumerable<EnrollmentResponseDto> enrollmentDtos = enrollments.Select(e => new EnrollmentResponseDto
-            {
-                Id = e.Id,
-                StudentId = e.StudentId,
-                CourseId = e.CourseId,
-                Percentage = e.Percentage
-            });
-
-            return enrollmentDtos;
+            return mapper.Map<IEnumerable<EnrollmentResponseDto>>(enrollments);
         }
 
 
@@ -33,40 +27,23 @@ namespace StudentManagementSystem.Services.Implementations
             if (enrollment == null)
                 return null;
 
-            EnrollmentResponseDto enrollmentDto = new EnrollmentResponseDto
-            {
-                Id = enrollment.Id,
-                StudentId = enrollment.StudentId,
-                CourseId = enrollment.CourseId,
-                Percentage = enrollment.Percentage
-            };
-
-            return enrollmentDto;
+            return mapper.Map<EnrollmentResponseDto>(enrollment);
         }
 
 
         public async Task<EnrollmentResponseDto> CreateEnrollment(CreateEnrollmentDto createDto)
         {
             // convert CreateEnrollmentDto to Enrollment Entity
-            Enrollment enrollment = new Enrollment
-            {
-                StudentId = createDto.StudentId,
-                CourseId = createDto.CourseId,
-                Percentage = createDto.Percentage
-            };
+            Enrollment enrollment = mapper.Map<Enrollment>(createDto);
 
             // save course to database
             int id = await enrollmentRepository.CreateEnrollment(enrollment);
 
+            // map back to response
+            EnrollmentResponseDto enrollmentDto =
+                mapper.Map<EnrollmentResponseDto>(enrollment);
 
-            // convert entity to EnrollmentResponseDto
-            EnrollmentResponseDto enrollmentDto = new EnrollmentResponseDto
-            {
-                Id = id,
-                StudentId = enrollment.StudentId,
-                CourseId = enrollment.CourseId,
-                Percentage = enrollment.Percentage
-            };
+            enrollmentDto.Id = id;
 
             return enrollmentDto;
         }
@@ -74,13 +51,8 @@ namespace StudentManagementSystem.Services.Implementations
 
         public async Task<bool> UpdateEnrollment(int enrollmentId, UpdateEnrollmentDto updateDto)
         {
-            Enrollment enrollment = new Enrollment
-            {
-                Id = enrollmentId,
-                StudentId = updateDto.StudentId,
-                CourseId = updateDto.CourseId,
-                Percentage = updateDto.Percentage
-            };
+            Enrollment enrollment = mapper.Map<Enrollment>(updateDto);
+            enrollment.Id = enrollmentId;
 
             int rows = await enrollmentRepository.UpdateEnrollment(enrollment);
 
@@ -90,9 +62,7 @@ namespace StudentManagementSystem.Services.Implementations
 
         public async Task<bool> DeleteEnrollment(int enrollmentId)
         {
-            bool deleted = await enrollmentRepository.DeleteEnrollment(enrollmentId);
-
-            return deleted;
+            return await enrollmentRepository.DeleteEnrollment(enrollmentId);
         }
     }
 }
