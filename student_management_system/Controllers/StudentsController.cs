@@ -36,7 +36,7 @@ namespace StudentManagementSystem.Controllers
 
             return CreatedAtAction(
                 nameof(GetStudentById),
-                new { id = studentDto.Id },
+                new { studentId = studentDto.Id },
                 studentDto
             );
         }
