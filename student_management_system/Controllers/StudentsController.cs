@@ -9,18 +9,18 @@ namespace StudentManagementSystem.Controllers
     public class StudentsController(IStudentService studentService) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetStudentDto>>> GetStudents()
+        public async Task<ActionResult<IEnumerable<StudentResponseDto>>> GetStudents()
         {
-            IEnumerable<GetStudentDto> studentsDtos = await studentService.GetStudents();
+            IEnumerable<StudentResponseDto> studentsDtos = await studentService.GetStudents();
 
             return Ok(studentsDtos);
         }
 
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GetStudentDto>> GetStudentById(int id)
+        [HttpGet("{studentId}")]
+        public async Task<ActionResult<StudentResponseDto>> GetStudentById(int studentId)
         {
-            GetStudentDto? student = await studentService.GetStudentById(id);
+            StudentResponseDto? student = await studentService.GetStudentById(studentId);
 
             if (student == null)
                 return NotFound();
@@ -30,9 +30,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<GetStudentDto>> CreateStudent(CreateStudentDto createDto)
+        public async Task<ActionResult<StudentResponseDto>> CreateStudent(CreateStudentDto createDto)
         {
-            GetStudentDto studentDto = await studentService.CreateStudent(createDto);
+            StudentResponseDto studentDto = await studentService.CreateStudent(createDto);
 
             return CreatedAtAction(
                 nameof(GetStudentById),
@@ -42,10 +42,10 @@ namespace StudentManagementSystem.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateStudent(int id, UpdateStudentDto updateDto)
+        [HttpPut("{studentId}")]
+        public async Task<IActionResult> UpdateStudent(int studentId, UpdateStudentDto updateDto)
         {
-            bool updated = await studentService.UpdateStudent(id, updateDto);
+            bool updated = await studentService.UpdateStudent(studentId, updateDto);
 
             if (!updated)
                 return NotFound();
@@ -54,15 +54,27 @@ namespace StudentManagementSystem.Controllers
         }
 
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudent(int id)
+        [HttpDelete("{studentId}")]
+        public async Task<IActionResult> DeleteStudent(int studentId)
         {
-            bool deleted = await studentService.DeleteStudent(id);
+            bool deleted = await studentService.DeleteStudent(studentId);
 
             if (!deleted)
                 return NotFound();
 
             return NoContent();
+        }
+
+
+        [HttpGet("{studentId}/courses")]
+        public async Task<ActionResult<IEnumerable<CourseResponseDto>>> GetCoursesByStudentId(int studentId)
+        {
+            IEnumerable<CourseResponseDto>? courses = await studentService.GetCoursesByStudentId(studentId);
+
+            if (courses == null)
+                return NotFound();
+
+            return Ok(courses);
         }
     }
 }

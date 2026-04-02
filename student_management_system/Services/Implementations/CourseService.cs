@@ -1,6 +1,7 @@
 ﻿using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Models;
 using StudentManagementSystem.Repositories.Abstractions;
+using StudentManagementSystem.Repositories.Implementations;
 using StudentManagementSystem.Services.Abstractions;
 
 namespace StudentManagementSystem.Services.Implementations
@@ -8,12 +9,12 @@ namespace StudentManagementSystem.Services.Implementations
     // services call repositories to fetch/store entities/to database
     public class CourseService(ICourseRepository courseRepository) : ICourseService
     {
-        public async Task<IEnumerable<GetCourseDto>> GetCourses()
+        public async Task<IEnumerable<CourseResponseDto>> GetCourses()
         {
             IEnumerable<Course> courses = await courseRepository.GetCourses();
 
             // convert the entities into dtos
-            IEnumerable<GetCourseDto> courseDtos = courses.Select(c => new GetCourseDto
+            IEnumerable<CourseResponseDto> courseDtos = courses.Select(c => new CourseResponseDto
             {
                 Id = c.Id,
                 CourseName = c.CourseName
@@ -23,15 +24,15 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<GetCourseDto?> GetCourseById(int id)
+        public async Task<CourseResponseDto?> GetCourseById(int courseId)
         {
-            Course? course = await courseRepository.GetCourseById(id);
+            Course? course = await courseRepository.GetCourseById(courseId);
 
             if (course == null)
                 return null;
 
             // to dto
-            GetCourseDto courseDto = new GetCourseDto
+            CourseResponseDto courseDto = new CourseResponseDto
             {
                 Id = course.Id,
                 CourseName = course.CourseName
@@ -41,7 +42,7 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<GetCourseDto> CreateCourse(CreateCourseDto createDto)
+        public async Task<CourseResponseDto> CreateCourse(CreateCourseDto createDto)
         {
             // convert CreateCourseDto to Course Entity
             Course course = new Course
@@ -52,8 +53,8 @@ namespace StudentManagementSystem.Services.Implementations
             // save course to database
             int id = await courseRepository.CreateCourse(course);
 
-            // convert entity to GetCourseDto
-            GetCourseDto courseDto = new GetCourseDto
+            // convert entity to CourseResponseDto
+            CourseResponseDto courseDto = new CourseResponseDto
             {
                 Id = id,
                 CourseName = course.CourseName
@@ -62,11 +63,11 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<bool> UpdateCourse(int id, UpdateCourseDto updateDto)
+        public async Task<bool> UpdateCourse(int courseId, UpdateCourseDto updateDto)
         {
             Course course = new Course
             {
-                Id = id,
+                Id = courseId,
                 CourseName = updateDto.CourseName
             };
 
@@ -76,11 +77,29 @@ namespace StudentManagementSystem.Services.Implementations
         }
 
 
-        public async Task<bool> DeleteCourse(int id)
+        public async Task<bool> DeleteCourse(int courseId)
         {
-            bool deleted = await courseRepository.DeleteCourse(id);
+            bool deleted = await courseRepository.DeleteCourse(courseId);
 
             return deleted;
+        }
+
+
+        public async Task<IEnumerable<StudentResponseDto>?> GetStudentsByCourseId(int courseId)
+        {
+            IEnumerable<Student> students = await courseRepository.GetStudentsByCourseId(courseId);
+
+            if (!students.Any())
+                return null;
+
+            IEnumerable<StudentResponseDto> studentDtos = students.Select(s => new StudentResponseDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Email = s.Email
+            });
+
+            return studentDtos;
         }
     }
 }

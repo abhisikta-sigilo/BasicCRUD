@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Services.Abstractions;
+using StudentManagementSystem.Services.Implementations;
 
 namespace StudentManagementSystem.Controllers
 {
@@ -9,19 +10,19 @@ namespace StudentManagementSystem.Controllers
     public class CourseController(ICourseService courseService) : ControllerBase
     {
         [HttpGet]
-        // This endpoint returns a list of GetCourseDto objects
-        public async Task<ActionResult<IEnumerable<GetCourseDto>>> GetCourses()
+        // This endpoint returns a list of CourseResponseDto objects
+        public async Task<ActionResult<IEnumerable<CourseResponseDto>>> GetCourses()
         {
-            IEnumerable<GetCourseDto> courses = await courseService.GetCourses();
+            IEnumerable<CourseResponseDto> courses = await courseService.GetCourses();
 
             return Ok(courses);
         }
 
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GetCourseDto>> GetCourseById(int id)
+        [HttpGet("{courseId}")]
+        public async Task<ActionResult<CourseResponseDto>> GetCourseById(int courseId)
         {
-            GetCourseDto? course = await courseService.GetCourseById(id);
+            CourseResponseDto? course = await courseService.GetCourseById(courseId);
 
             if (course == null)
             {
@@ -33,9 +34,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<GetCourseDto>> CreateCourse(CreateCourseDto createDto)
+        public async Task<ActionResult<CourseResponseDto>> CreateCourse(CreateCourseDto createDto)
         {
-            GetCourseDto courseDto = await courseService.CreateCourse(createDto);
+            CourseResponseDto courseDto = await courseService.CreateCourse(createDto);
 
             // return 201 created
             return CreatedAtAction(nameof(GetCourseById), new { id = courseDto.Id }, courseDto);
@@ -43,10 +44,10 @@ namespace StudentManagementSystem.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCourse(int id, UpdateCourseDto updateDto)
+        [HttpPut("{courseId}")]
+        public async Task<IActionResult> UpdateCourse(int courseId, UpdateCourseDto updateDto)
         {
-            bool updated = await courseService.UpdateCourse(id, updateDto);
+            bool updated = await courseService.UpdateCourse(courseId, updateDto);
 
             if (!updated)
             {
@@ -57,10 +58,10 @@ namespace StudentManagementSystem.Controllers
         }
 
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCourse(int id)
+        [HttpDelete("{courseId}")]
+        public async Task<IActionResult> DeleteCourse(int courseId)
         {
-            bool deleted = await courseService.DeleteCourse(id);
+            bool deleted = await courseService.DeleteCourse(courseId);
 
             if (!deleted)
             {
@@ -70,5 +71,16 @@ namespace StudentManagementSystem.Controllers
             return NoContent();
         }
 
+
+        [HttpGet("{courseId}/students")]
+        public async Task<ActionResult<IEnumerable<StudentResponseDto>>> GetStudentsByCourseId(int courseId)
+        {
+            IEnumerable<StudentResponseDto>? students = await courseService.GetStudentsByCourseId(courseId);
+
+            if (students == null)
+                return NotFound();
+
+            return Ok(students);
+        }
     }
 }

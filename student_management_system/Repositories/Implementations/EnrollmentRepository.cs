@@ -2,6 +2,7 @@
 using StudentManagementSystem.Data;
 using StudentManagementSystem.Models;
 using StudentManagementSystem.Repositories.Abstractions;
+using StudentManagementSystem.SqlQueries;
 using System.Data;
 
 namespace StudentManagementSystem.Repositories.Implementations
@@ -12,55 +13,53 @@ namespace StudentManagementSystem.Repositories.Implementations
         {
             using IDbConnection connection = context.CreateConnection();
 
-            string query = "SELECT * FROM Enrollments";
-
-            IEnumerable<Enrollment> enrollments = await connection.QueryAsync<Enrollment>(query);
+            IEnumerable<Enrollment> enrollments = await connection.QueryAsync<Enrollment>(
+                EnrollmentSqlQueries.GetEnrollments
+            );
 
             return enrollments.ToList();
         }
 
-        public async Task<Enrollment?> GetEnrollmentById(int id)
+        public async Task<Enrollment?> GetEnrollmentById(int enrollmentId)
         {
             using IDbConnection connection = context.CreateConnection();
 
-            string query = "SELECT * FROM Enrollments WHERE Id = @Id";
-
-            return await connection.QueryFirstOrDefaultAsync<Enrollment>(query, new { Id = id });
+            return await connection.QueryFirstOrDefaultAsync<Enrollment>(
+                EnrollmentSqlQueries.GetEnrollmentById,
+                new { Id = enrollmentId }
+            );
         }
 
         public async Task<int> CreateEnrollment(Enrollment enrollment)
         {
             using IDbConnection connection = context.CreateConnection();
 
-            string query = @"INSERT INTO Enrollments (StudentId, CourseId, Percentage)
-                          VALUES (@StudentId, @CourseId, @Percentage);
-                          SELECT CAST(SCOPE_IDENTITY() as int);";
-
-            return await connection.ExecuteScalarAsync<int>(query, enrollment);
+            return await connection.ExecuteScalarAsync<int>(
+                EnrollmentSqlQueries.CreateEnrollment,
+                enrollment
+            );
         }
 
         public async Task<int> UpdateEnrollment(Enrollment enrollment)
         {
             using IDbConnection connection = context.CreateConnection();
 
-            string query = @"UPDATE Enrollments
-                          SET StudentId = @StudentId,
-                              CourseId = @CourseId,
-                              Percentage = @Percentage
-                          WHERE Id = @Id";
-
-            int rowsAffected = await connection.ExecuteAsync(query, enrollment);
+            int rowsAffected = await connection.ExecuteAsync(
+                EnrollmentSqlQueries.UpdateEnrollment,
+                enrollment
+            );
 
             return rowsAffected;
         }
 
-        public async Task<bool> DeleteEnrollment(int id)
+        public async Task<bool> DeleteEnrollment(int enrollmentId)
         {
             using IDbConnection connection = context.CreateConnection();
-
-            string query = "DELETE FROM Enrollments WHERE Id = @Id";
-
-            int rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
+            
+            int rowsAffected = await connection.ExecuteAsync(
+                EnrollmentSqlQueries.DeleteEnrollment, 
+                new { Id = enrollmentId }
+            );
 
             return rowsAffected > 0;
         }

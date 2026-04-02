@@ -2,6 +2,7 @@
 using StudentManagementSystem.Data;
 using StudentManagementSystem.Models;
 using StudentManagementSystem.Repositories.Abstractions;
+using StudentManagementSystem.SqlQueries;
 using System.Data;
 
 namespace StudentManagementSystem.Repositories.Implementations
@@ -12,30 +13,29 @@ namespace StudentManagementSystem.Repositories.Implementations
         {
             using IDbConnection connection = context.CreateConnection();
 
-            IEnumerable<Student> students = await connection
-                .QueryAsync<Student>("SELECT * FROM Students");
+            IEnumerable<Student> students = await connection.QueryAsync<Student>(StudentSqlQueries.GetStudents);
 
             return students.ToList();
         }
 
-        public async Task<Student?> GetStudentById(int id)
+        public async Task<Student?> GetStudentById(int studentId)
         {
             using IDbConnection connection = context.CreateConnection();
 
-            string query = "SELECT * FROM Students WHERE Id = @Id";
-
-            return await connection.QueryFirstOrDefaultAsync<Student>(query, new { Id = id });
+            return await connection.QueryFirstOrDefaultAsync<Student>(
+                StudentSqlQueries.GetStudentById,
+                new { Id = studentId }
+            );
         }
 
         public async Task<int> CreateStudent(Student student)
         {
             using IDbConnection connection = context.CreateConnection();
 
-            string query = @"INSERT INTO Students (Name, Email)
-                          VALUES (@Name, @Email);
-                          SELECT CAST(SCOPE_IDENTITY() as int);";
-
-            int id = await connection.ExecuteScalarAsync<int>(query, student);
+            int id = await connection.ExecuteScalarAsync<int>(
+                StudentSqlQueries.CreateStudent, 
+                student
+            );
 
             return id;
         }
@@ -44,25 +44,36 @@ namespace StudentManagementSystem.Repositories.Implementations
         {
             using IDbConnection connection = context.CreateConnection();
 
-            string query = @"UPDATE Students
-                          SET Name = @Name,
-                              Email = @Email
-                          WHERE Id = @Id";
-
-            int rowsAffected = await connection.ExecuteAsync(query, student);
+            int rowsAffected = await connection.ExecuteAsync(
+                StudentSqlQueries.UpdateStudent,
+                student
+            );
 
             return rowsAffected;
         }
 
-        public async Task<bool> DeleteStudent(int id)
+        public async Task<bool> DeleteStudent(int studentId)
         {
             using IDbConnection connection = context.CreateConnection();
 
             int rowsAffected = await connection.ExecuteAsync(
-                "DELETE FROM Students WHERE Id = @Id",
-                new { Id = id });
+                StudentSqlQueries.DeleteStudent,
+                new { Id = studentId }
+            );
 
             return rowsAffected > 0;
+        }
+
+        public async Task<IEnumerable<Course>> GetCoursesByStudentId(int studentId)
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            IEnumerable<Course> courses = await connection.QueryAsync<Course>(
+                StudentSqlQueries.GetCoursesByStudentId,
+                new { Id = studentId }
+            );
+
+            return courses.ToList();
         }
     }
 }

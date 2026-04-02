@@ -9,20 +9,20 @@ namespace StudentManagementSystem.Controllers
     public class EnrollmentsController(IEnrollmentService enrollmentService) : ControllerBase
     {
         [HttpGet]
-        // This endpoint returns a list of GetCourseDto objects
-        public async Task<ActionResult<IEnumerable<GetEnrollmentDto>>> GetEnrollments()
+        
+        public async Task<ActionResult<IEnumerable<EnrollmentResponseDto>>> GetEnrollments()
         {
             // get entities from database
-            IEnumerable<GetEnrollmentDto> enrollmentDtos = await enrollmentService.GetEnrollments();
+            IEnumerable<EnrollmentResponseDto> enrollmentDtos = await enrollmentService.GetEnrollments();
 
             return Ok(enrollmentDtos);
         }
 
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GetEnrollmentDto>> GetEnrollmentById(int id)
+        [HttpGet("{enrollmentId}")]
+        public async Task<ActionResult<EnrollmentResponseDto>> GetEnrollmentById(int enrollmentId)
         {
-            GetEnrollmentDto? enrollmentDto = await enrollmentService.GetEnrollmentById(id);
+            EnrollmentResponseDto? enrollmentDto = await enrollmentService.GetEnrollmentById(enrollmentId);
 
             if (enrollmentDto == null)
                 return NotFound();
@@ -32,9 +32,9 @@ namespace StudentManagementSystem.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<GetEnrollmentDto>> CreateEnrollment(CreateEnrollmentDto createDto)
+        public async Task<ActionResult<EnrollmentResponseDto>> CreateEnrollment(CreateEnrollmentDto createDto)
         {
-            GetEnrollmentDto enrollmentDto = await enrollmentService.CreateEnrollment(createDto);
+            EnrollmentResponseDto enrollmentDto = await enrollmentService.CreateEnrollment(createDto);
 
             return CreatedAtAction(
                 nameof(GetEnrollmentById),
@@ -43,10 +43,10 @@ namespace StudentManagementSystem.Controllers
             );
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEnrollment(int id, UpdateEnrollmentDto updateDto)
+        [HttpPut("{enrollmentId}")]
+        public async Task<IActionResult> UpdateEnrollment(int enrollmentId, UpdateEnrollmentDto updateDto)
         {
-            bool updated = await enrollmentService.UpdateEnrollment(id, updateDto);
+            bool updated = await enrollmentService.UpdateEnrollment(enrollmentId, updateDto);
 
             if (!updated)
                 return NotFound();
@@ -55,10 +55,10 @@ namespace StudentManagementSystem.Controllers
         }
 
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEnrollment(int id)
+        [HttpDelete("{enrollmentId}")]
+        public async Task<IActionResult> DeleteEnrollment(int enrollmentId)
         {
-            bool deleted = await enrollmentService.DeleteEnrollment(id);
+            bool deleted = await enrollmentService.DeleteEnrollment(enrollmentId);
 
             if (!deleted)
                 return NotFound();

@@ -4,10 +4,10 @@ namespace StudentManagementSystem.Services.Abstractions
 {
     public interface IEnrollmentService
     {
-        Task<IEnumerable<GetEnrollmentDto>> GetEnrollments();
-        Task<GetEnrollmentDto?> GetEnrollmentById(int id);
-        Task<GetEnrollmentDto> CreateEnrollment(CreateEnrollmentDto createDto);
-        Task<bool> UpdateEnrollment(int id, UpdateEnrollmentDto updateDto);
-        Task<bool> DeleteEnrollment(int id);
+        Task<IEnumerable<EnrollmentResponseDto>> GetEnrollments();
+        Task<EnrollmentResponseDto?> GetEnrollmentById(int enrollmentId);
+        Task<EnrollmentResponseDto> CreateEnrollment(CreateEnrollmentDto createDto);
+        Task<bool> UpdateEnrollment(int enrollmentId, UpdateEnrollmentDto updateDto);
+        Task<bool> DeleteEnrollment(int enrollmentId);
     }
 }
